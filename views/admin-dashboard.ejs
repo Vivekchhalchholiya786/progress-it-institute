@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | Progress IT Institute</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* ========================================
+           ADMIN DASHBOARD STYLES
+           ======================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-header h2 {
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header h2 i {
+            font-size: 1.4rem;
+            color: #6366f1;
+        }
+
+        .sidebar-header p {
+            color: #64748b;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            padding-left: 34px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: #e2e8f0;
+        }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .sidebar-nav a i {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            color: #ef4444;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-footer a:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Mobile sidebar toggle */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: #1e293b;
+            border: none;
+            color: #f1f5f9;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: 260px;
+            flex: 1;
+            padding: 32px;
+            min-height: 100vh;
+            min-width: 0; /* Prevents overflow from wide child tables */
+        }
+
+        .admin-main h1 {
+            font-size: 1.6rem;
+            color: #1e293b;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        /* Tab Content Sections */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Stat Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .stat-icon.pink { background: rgba(236, 72, 153, 0.1); color: #ec4899; }
+
+        .stat-info h3 {
+            font-size: 1.65rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        /* Card Container */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 1.15rem;
+            color: #1e293b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            color: #6366f1;
+            font-size: 1.3rem;
+        }
+
+        /* Form Styles */
+        .coupon-form {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .form-field {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #1e293b;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-field input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-create {
+            padding: 11px 24px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 12px 16px;
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 12px 16px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .badge.used {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .btn-delete {
+            padding: 6px 14px;
+            background: rgba(239, 68, 68, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #ef4444;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .admin-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .admin-main {
+                margin-left: 0;
+                padding: 20px;
+                padding-top: 70px;
+                min-width: 0;
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .coupon-form {
+                flex-direction: column;
+            }
+
+            .form-field {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sorting Headers */
+        thead th.sortable {
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        thead th.sortable:hover {
+            background: #cbd5e1 !important;
+        }
+        .sort-icon {
+            font-size: 0.95rem;
+            vertical-align: middle;
+            margin-left: 4px;
+            color: #94a3b8;
+        }
+        thead th.sort-asc .sort-icon,
+        thead th.sort-desc .sort-icon {
+            color: #6366f1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-toggle" onclick="document.querySelector('.admin-sidebar').classList.toggle('open')">
+        <i class='bx bx-menu'></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2><i class='bx bx-code-alt'></i> Progress IT</h2>
+            <p>Admin Management Panel</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="active" data-tab="dashboard" onclick="switchTab('dashboard', this)">
+                <i class='bx bxs-dashboard'></i> Dashboard
+            </a>
+            <a href="#" data-tab="coupons" onclick="switchTab('coupons', this)">
+                <i class='bx bxs-discount'></i> Coupons
+            </a>
+            <a href="#" data-tab="enquiries" onclick="switchTab('enquiries', this)">
+                <i class='bx bxs-message-dots'></i> Enquiries
+            </a>
+            <a href="#" data-tab="admissions" onclick="switchTab('admissions', this)">
+                <i class='bx bxs-graduation'></i> Admissions
+            </a>
+            <a href="#" data-tab="careers" onclick="switchTab('careers', this)">
+                <i class='bx bxs-briefcase'></i> Careers
+            </a>
+            <a href="#" data-tab="blogs" onclick="switchTab('blogs', this)">
+                <i class='bx bxs-book-open'></i> Blogs
+            </a>
+            <a href="#" data-tab="settings" onclick="switchTab('settings', this)">
+                <i class='bx bxs-cog'></i> Settings
+            </a>
+            <a href="#" data-tab="reviews" onclick="switchTab('reviews', this)">
+                <i class='bx bx-star'></i> Reviews
+            </a>
+            <a href="#" data-tab="brochures" onclick="switchTab('brochures', this)">
+                <i class='bx bx-file'></i> Brochures
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/admin/logout">
+                <i class='bx bx-log-out'></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <% if (typeof dbConfigured !== 'undefined' && !dbConfigured) { %>
+            <div class="db-warning-banner" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-left: 4px solid #ef4444; color: #b91c1c; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                <i class='bx bx-error-alt' style="font-size: 1.8rem; color: #ef4444; flex-shrink: 0;"></i>
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 600;">Database Connection Warning</h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #7f1d1d;">
+                        <code>GOOGLE_SHEET_ID</code> or <code>google-creds.json</code> is missing. Please check your <code>.env</code> file (locally) or Environment settings / Secret Files (on Render.com). Database operations will run in local JSON database mode.
+                    </p>
+                </div>
+            </div>
+        <% } %>
+
+        <!-- ========== DASHBOARD TAB ========== -->
+        <div id="tab-dashboard" class="tab-content active">
+            <h1>Dashboard Overview</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class='bx bxs-message-dots'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= enquiries.length %></h3>
+                        <p>Total Enquiries</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class='bx bxs-graduation'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= admissions.length %></h3>
+                        <p>Total Admissions</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class='bx bxs-discount'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= coupons.filter(c => !c.isUsed).length %></h3>
+                        <p>Active Coupons</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon pink">
+                        <i class='bx bxs-badge-check'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= coupons.filter(c => c.isUsed).length %></h3>
+                        <p>Used Coupons</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class='bx bx-info-circle'></i> Quick Info</h2>
+                <p style="color: #64748b; line-height: 1.7; font-size: 0.9rem;">
+                    Welcome to the Progress IT Institute Admin Dashboard. Use the sidebar to manage coupons, view enquiries, and track admission records.
+                    Data is stored in a local JSON database with a rolling limit of 30 records each for enquiries and admissions.
+                    Coupons are one-time use — once applied during admission, they are automatically marked as used.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== COUPONS TAB ========== -->
+        <div id="tab-coupons" class="tab-content">
+            <h1>Coupon Management</h1>
+
+            <div class="card">
+                <h2><i class='bx bx-plus-circle'></i> Create New Coupon</h2>
+
+                <form class="coupon-form" action="/admin/coupon/create" method="POST">
+                    <div class="form-field" style="flex: 2; min-width: 250px;">
+                        <label>Coupon Code</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="couponCodeInput" name="code" placeholder="e.g. SUMMER25" required 
+                                   style="text-transform: uppercase;" pattern="[A-Za-z0-9@#$!*&]+" 
+                                   title="Only letters, numbers, and symbols (@#$!*&) allowed">
+                            <button type="button" onclick="generateRandomCoupon()" class="btn-create" style="background: #475569; padding: 11px 16px;" title="Generate Random Code">
+                                <i class='bx bx-shuffle'></i> Generate
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Discount %</label>
+                        <input type="number" name="discountPercent" placeholder="e.g. 20" 
+                               min="1" max="100" required>
+                    </div>
+                    <button type="submit" class="btn-create">
+                        <i class='bx bx-plus'></i> Create Coupon
+                    </button>
+                </form>
+
+                <h2><i class='bx bxs-coupon'></i> Coupon Tickets Grid</h2>
+                <% if (coupons.length === 0) { %>
+                    <div class="empty-state" style="margin-bottom: 2rem;">
+                        <i class='bx bx-discount'></i>
+                        <p>No coupons created yet. Create your first coupon above!</p>
+                    </div>
+                <% } else { %>
+                    <div class="coupon-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px;">
+                        <% coupons.forEach((coupon) => { %>
+                            <div class="coupon-ticket-card <%= coupon.isUsed ? 'used' : '' %>" style="
+                                background: <%= coupon.isUsed ? 'linear-gradient(135deg, #cbd5e1, #94a3b8)' : 'linear-gradient(135deg, #6366f1, #3b82f6)' %>;
+                                color: white;
+                                border-radius: 16px;
+                                padding: 24px;
+                                position: relative;
+                                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                                min-height: 190px;
+                                overflow: hidden;
+                                border: 2px dashed rgba(255,255,255,0.4);
+                            ">
+                                <!-- Card Ticket Punch-outs -->
+                                <div class="ticket-punch-left" style="
+                                    position: absolute;
+                                    width: 20px;
+                                    height: 20px;
+                                    background: #f0f2f5;
+                                    border-radius: 50%;
+                                    left: -10px;
+                                    top: calc(50% - 10px);
+                                    box-shadow: inset -3px 0 5px rgba(0,0,0,0.06);
+                                "></div>
+                                <div class="ticket-punch-right" style="
+                                    position: absolute;
+                                    width: 20px;
+                                    height: 20px;
+                                    background: #f0f2f5;
+                                    border-radius: 50%;
+                                    right: -10px;
+                                    top: calc(50% - 10px);
+                                    box-shadow: inset 3px 0 5px rgba(0,0,0,0.06);
+                                "></div>
+
+                                <!-- Ticket Header -->
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 2;">
+                                    <div>
+                                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85;">Progress IT Institute</span>
+                                        <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 4px; color: white;"><%= coupon.discountPercent %>% OFF</h3>
+                                    </div>
+                                    <span class="badge <%= coupon.isUsed ? 'used' : 'active' %>" style="border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.15); color: white;">
+                                        <%= coupon.isUsed ? 'Used' : 'Active' %>
+                                    </span>
+                                </div>
+
+                                <!-- Ticket Code -->
+                                <div style="margin: 20px 0; text-align: center; background: rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25); z-index: 2;">
+                                    <code style="font-family: monospace; font-size: 1.15rem; font-weight: 700; letter-spacing: 1.5px; color: #fff;"><%= coupon.code %></code>
+                                </div>
+
+                                <!-- Ticket Footer / Actions -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; z-index: 2; flex-wrap: wrap; gap: 8px; width: 100%;">
+                                    <span style="font-size: 0.7rem; opacity: 0.85;"><%= new Date(coupon.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) %></span>
+                                    <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                        <!-- Copy Code Button -->
+                                        <button type="button" onclick="copyCoupon('<%= coupon.code %>', this)" title="Copy Code" style="
+                                            background: rgba(255, 255, 255, 0.18);
+                                            color: white;
+                                            border: 1px solid rgba(255, 255, 255, 0.3);
+                                            padding: 6px 10px;
+                                            border-radius: 6px;
+                                            font-size: 0.85rem;
+                                            cursor: pointer;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            transition: all 0.2s;
+                                            height: 30px;
+                                            width: 34px;
+                                        ">
+                                            <i class='bx bx-copy'></i>
+                                        </button>
+                                        
+                                        <!-- Share Button -->
+                                        <button type="button" onclick="shareCoupon('<%= coupon.code %>', <%= coupon.discountPercent %>)" title="Share Offer" style="
+                                            background: rgba(255, 255, 255, 0.18);
+                                            color: white;
+                                            border: 1px solid rgba(255, 255, 255, 0.3);
+                                            padding: 6px 10px;
+                                            border-radius: 6px;
+                                            font-size: 0.85rem;
+                                            cursor: pointer;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            transition: all 0.2s;
+                                            height: 30px;
+                                            width: 34px;
+                                        ">
+                                            <i class='bx bx-share-alt'></i>
+                                        </button>
+
+                                        <!-- Download Image Button -->
+                                        <button type="button" onclick="downloadCoupon('<%= coupon.code %>', <%= coupon.discountPercent %>)" class="btn-download" style="
+                                            background: white;
+                                            color: <%= coupon.isUsed ? '#475569' : '#3b82f6' %>;
+                                            border: none;
+                                            padding: 6px 10px;
+                                            border-radius: 6px;
+                                            font-size: 0.75rem;
+                                            font-weight: 700;
+                                            cursor: pointer;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 4px;
+                                            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                                            transition: all 0.2s;
+                                            height: 30px;
+                                        ">
+                                            <i class='bx bx-download'></i> Download
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+
+                <h2><i class='bx bx-list-ul'></i> All Coupons</h2>
+
+                <% if (coupons.length === 0) { %>
+                    <div class="empty-state">
+                        <i class='bx bx-discount'></i>
+                        <p>No coupons created yet. Create your first coupon above!</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Coupon Code</th>
+                                    <th>Discount</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% coupons.forEach((coupon, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><strong><%= coupon.code %></strong></td>
+                                        <td><%= coupon.discountPercent %>%</td>
+                                        <td>
+                                            <% if (coupon.isUsed) { %>
+                                                <span class="badge used">Used</span>
+                                            <% } else { %>
+                                                <span class="badge active">Active</span>
+                                            <% } %>
+                                        </td>
+                                        <td><%= new Date(coupon.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %></td>
+                                        <td>
+                                            <form action="/admin/coupon/delete" method="POST" style="display:inline;" 
+                                                  onsubmit="return confirm('Delete coupon <%= coupon.code %>?')">
+                                                <input type="hidden" name="code" value="<%= coupon.code %>">
+                                                <button type="submit" class="btn-delete">
+                                                    <i class='bx bx-trash'></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ========== ENQUIRIES TAB ========== -->
+        <div id="tab-enquiries" class="tab-content">
+            <h1>Enquiry Submissions</h1>
+
+            <div class="card">
+                <h2><i class='bx bx-message-detail'></i> All Enquiries (<%= enquiries.length %>)</h2>
+
+                <% if (enquiries.length === 0) { %>
+                    <div class="empty-state">
+                        <i class='bx bx-message-dots'></i>
+                        <p>No enquiries received yet.</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table id="enquiriesTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="sortable" onclick="sortTable('enquiriesTable', 1, 'string')">Name <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th class="sortable" onclick="sortTable('enquiriesTable', 4, 'string')">Course <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Message</th>
+                                    <th class="sortable" onclick="sortTable('enquiriesTable', 6, 'date')">Date <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% enquiries.slice().reverse().forEach((enq, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><strong><%= enq.name %></strong></td>
+                                        <td><%= enq.phone %></td>
+                                        <td><%= enq.email %></td>
+                                        <td><%= enq.course %></td>
+                                        <td title="<%= enq.message %>"><%= enq.message %></td>
+                                        <td><%= new Date(enq.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %></td>
+                                        <td>
+                                            <form action="/admin/enquiry/delete" method="POST" style="display:inline;" 
+                                                  onsubmit="return confirm('Delete enquiry from <%= enq.name %>?')">
+                                                <input type="hidden" name="id" value="<%= enq.id %>">
+                                                <button type="submit" class="btn-delete">
+                                                    <i class='bx bx-trash'></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ========== ADMISSIONS TAB ========== -->
+        <div id="tab-admissions" class="tab-content">
+            <h1>Admission Records</h1>
+
+            <div class="card">
+                <h2><i class='bx bx-user-check'></i> All Admissions (<%= admissions.length %>)</h2>
+
+                <% if (admissions.length === 0) { %>
+                    <div class="empty-state">
+                        <i class='bx bx-graduation'></i>
+                        <p>No admission records found.</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table id="admissionsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Reg ID</th>
+                                    <th class="sortable" onclick="sortTable('admissionsTable', 2, 'string')">Name <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th class="sortable" onclick="sortTable('admissionsTable', 5, 'string')">Course <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Final Fee</th>
+                                    <th>Coupon</th>
+                                    <th>Fees Status</th>
+                                    <th class="sortable" onclick="sortTable('admissionsTable', 9, 'date')">Date <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% admissions.slice().reverse().forEach((adm, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><code style="font-weight: 700; color: var(--primary);"><%= adm.admissionNumber || 'N/A' %></code></td>
+                                        <td><strong><%= adm.name %></strong></td>
+                                        <td><%= adm.phone %></td>
+                                        <td><%= adm.email %></td>
+                                        <td><%= adm.course %></td>
+                                        <td><%= adm.finalFee %></td>
+                                        <td>
+                                            <% if (adm.couponCode && adm.couponCode !== 'None') { %>
+                                                <span class="badge active"><%= adm.couponCode %></span>
+                                            <% } else { %>
+                                                <span style="color: #94a3b8;">None</span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <input type="checkbox" class="fees-toggle" data-id="<%= adm.id %>" <%= adm.feesPaid === 'true' ? 'checked' : '' %> style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--primary);">
+                                                <span class="fees-label" style="font-weight: 600; font-size: 0.85rem; color: <%= adm.feesPaid === 'true' ? 'var(--green)' : 'var(--red)' %>;">
+                                                    <%= adm.feesPaid === 'true' ? 'Paid' : 'Unpaid' %>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td><%= new Date(adm.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %></td>
+                                        <td>
+                                            <form action="/admin/admission/delete" method="POST" style="display:inline;" 
+                                                  onsubmit="return confirm('Delete admission for <%= adm.name %>?')">
+                                                <input type="hidden" name="id" value="<%= adm.id %>">
+                                                <button type="submit" class="btn-delete">
+                                                    <i class='bx bx-trash'></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ========== CAREERS TAB ========== -->
+        <div id="tab-careers" class="tab-content">
+            <h1>Careers & Recruitment Panel</h1>
+
+            <!-- Job Openings Sub-Panel -->
+            <div class="card">
+                <h2><i class='bx bx-plus-circle'></i> Create Job Opening</h2>
+                <form class="coupon-form" action="/admin/careers/job/create" method="POST" style="flex-direction: column; align-items: stretch; gap: 15px;">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <div class="form-field" style="flex: 2; min-width: 200px;">
+                            <label>Job Title *</label>
+                            <input type="text" name="title" placeholder="e.g. SAP FICO Trainer" required>
+                        </div>
+                        <div class="form-field" style="flex: 1; min-width: 150px;">
+                            <label>Location</label>
+                            <input type="text" name="location" placeholder="e.g. Nigdi, Pune" value="Nigdi, Pune">
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Description *</label>
+                        <input type="text" name="description" placeholder="Brief details about the role..." required>
+                    </div>
+                    <div class="form-field">
+                        <label>Key Requirements / Qualifications *</label>
+                        <input type="text" name="requirements" placeholder="e.g. 3+ years experience, MCA/BE, good skills" required>
+                    </div>
+                    <button type="submit" class="btn-create" style="align-self: flex-start;">
+                        <i class='bx bx-plus'></i> Post Job Opening
+                    </button>
+                </form>
+
+                <h2 style="margin-top: 30px;"><i class='bx bx-list-ul'></i> Active Job Openings (<%= jobs.length %>)</h2>
+                <% if (jobs.length === 0) { %>
+                    <div class="empty-state">
+                        <i class='bx bx-briefcase'></i>
+                        <p>No job openings posted yet.</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Location</th>
+                                    <th>Requirements</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% jobs.forEach((job, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><strong><%= job.title %></strong></td>
+                                        <td><%= job.location %></td>
+                                        <td title="<%= job.requirements %>"><%= job.requirements %></td>
+                                        <td>
+                                            <form action="/admin/careers/job/delete" method="POST" style="display:inline;" 
+                                                  onsubmit="return confirm('Delete job opening: <%= job.title %>?')">
+                                                <input type="hidden" name="id" value="<%= job.id %>">
+                                                <button type="submit" class="btn-delete">
+                                                    <i class='bx bx-trash'></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Job Applications Evaluator -->
+            <div class="card">
+                <h2><i class='bx bxs-user-detail'></i> Candidate Applications (<%= applications.length %>)</h2>
+                <% if (applications.length === 0) { %>
+                    <div class="empty-state">
+                        <i class='bx bx-user-voice'></i>
+                        <p>No candidate applications received yet.</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table id="applicationsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="sortable" onclick="sortTable('applicationsTable', 1, 'string')">Candidate <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Contact Info</th>
+                                    <th class="sortable" onclick="sortTable('applicationsTable', 3, 'string')">Position <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Exp & Qualifications</th>
+                                    <th>Resume Link</th>
+                                    <th>Status</th>
+                                    <th class="sortable" onclick="sortTable('applicationsTable', 7, 'date')">Date <i class='bx bx-sort-alt-2 sort-icon'></i></th>
+                                    <th>Evaluation Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% applications.forEach((app, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><strong><%= app.name %></strong></td>
+                                        <td>
+                                            <%= app.phone %><br>
+                                            <span style="font-size:0.8rem; color:var(--text-muted);"><%= app.email %></span>
+                                        </td>
+                                        <td><%= app.jobs ? app.jobs.title : 'Deleted Position' %></td>
+                                        <td>
+                                            Qual: <%= app.qualification %><br>
+                                            Exp: <%= app.experience %>
+                                        </td>
+                                        <td>
+                                            <a href="<%= app.resumeLink %>" target="_blank" class="badge active" style="text-decoration:none; display:inline-flex; align-items:center; gap:3px;">
+                                                <i class='bx bx-link-external'></i> Open Link
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <% if (app.status === 'Pending') { %>
+                                                <span class="badge active" style="background: rgba(245, 158, 11, 0.1); color: #d97706;">Pending</span>
+                                            <% } else if (app.status === 'Shortlisted') { %>
+                                                <span class="badge active" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">Shortlisted</span>
+                                            <% } else { %>
+                                                <span class="badge used" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">Rejected</span>
+                                            <% } %>
+                                        </td>
+                                        <td><%= new Date(app.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %></td>
+                                        <td>
+                                            <!-- Status Evaluator Form -->
+                                            <form action="/admin/careers/application/status" method="POST" style="display:inline-block; margin-right:5px;">
+                                                <input type="hidden" name="id" value="<%= app.id %>">
+                                                <select name="status" onchange="this.form.submit()" style="padding: 5px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #cbd5e1; outline:none; background:white; cursor:pointer;">
+                                                    <option value="" disabled selected>Status...</option>
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="Shortlisted">Shortlist</option>
+                                                    <option value="Rejected">Reject</option>
+                                                </select>
+                                            </form>
+                                            <!-- Delete Form -->
+                                            <form action="/admin/careers/application/delete" method="POST" style="display:inline-block;" 
+                                                  onsubmit="return confirm('Delete applicant record for <%= app.name %>?')">
+                                                <input type="hidden" name="id" value="<%= app.id %>">
+                                                <button type="submit" class="btn-delete" style="padding: 5px 10px;">
+                                                    <i class='bx bx-trash'></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ========== BLOGS TAB ========== -->
+        <div id="tab-blogs" class="tab-content">
+            <h1>Blogs Management</h1>
+
+            <!-- Create/Edit Blog Form Card -->
+            <div class="card">
+                <h2 id="blogFormHeading"><i class='bx bx-plus-circle'></i> Add New Blog Post</h2>
+                
+                <form id="blogCrudForm" action="/admin/blog/create" method="POST" style="display: flex; flex-direction: column; gap: 16px;">
+                    <input type="hidden" name="id" id="blogFormId">
+                    
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <div class="form-field" style="flex: 2; min-width: 250px;">
+                            <label>Blog Title *</label>
+                            <input type="text" name="title" id="blogFormTitle" placeholder="e.g. SAP ABAP: Careers & Growth in 2026" required>
+                        </div>
+                        <div class="form-field" style="flex: 1; min-width: 150px;">
+                            <label>Category *</label>
+                            <input type="text" name="category" id="blogFormCategory" placeholder="e.g. SAP ERP, Programming" required>
+                        </div>
+                        <div class="form-field" style="flex: 1; min-width: 120px;">
+                            <label>Read Time *</label>
+                            <input type="text" name="readTime" id="blogFormReadTime" placeholder="e.g. 6 Min Read" value="5 Min Read" required>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Card Summary Description *</label>
+                        <input type="text" name="summary" id="blogFormSummary" placeholder="Enter a brief, engaging summary to display on the main blog listing page..." required>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Full Blog Content (Supports HTML) *</label>
+                        <textarea name="content" id="blogFormContent" rows="12" placeholder="Write the full body of your blog post. You can use standard HTML tags like <p>, <h3>, <strong>, and <ul> to structure the article." required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.95rem; font-family: inherit; outline: none; transition: border-color 0.2s; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <button type="submit" id="blogFormSubmitBtn" class="btn-create">
+                            <i class='bx bx-plus'></i> Create Blog Post
+                        </button>
+                        <button type="button" id="blogFormCancelBtn" onclick="resetBlogForm()" class="btn-delete" style="display: none; height: 42px; padding: 0 20px; background: rgba(100,116,139,0.1); color: #475569;">
+                            Cancel Edit
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Blogs List Table Card -->
+            <div class="card">
+                <h2><i class='bx bx-list-ul'></i> All Published Blog Posts (<%= blogs.length %>)</h2>
+
+                <% if (blogs.length === 0) { %>
+                    <div class="empty-state">
+                        <i class='bx bx-book-open'></i>
+                        <p>No blog posts published yet. Create one using the form above!</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table id="blogsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Read Time</th>
+                                    <th>Date</th>
+                                    <th style="width: 160px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% blogs.forEach((blog, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td title="<%= blog.title %>"><strong><%= blog.title %></strong></td>
+                                        <td><span class="badge active" style="background: rgba(99,102,241,0.1); color:#6366f1;"><%= blog.category %></span></td>
+                                        <td><%= blog.readTime %></td>
+                                        <td><%= blog.date %></td>
+                                        <td>
+                                            <!-- Edit Trigger -->
+                                            <button type="button" onclick='populateBlogForEdit(<%= JSON.stringify(blog) %>)' class="btn-create" style="display: inline-flex; padding: 6px 12px; font-size: 0.8rem; background: #e2e8f0; color: #1e293b; margin-right: 5px; box-shadow: none;">
+                                                <i class='bx bx-edit-alt'></i> Edit
+                                            </button>
+                                            <!-- Delete Trigger -->
+                                            <form action="/admin/blog/delete" method="POST" style="display:inline;" onsubmit="return confirm('Delete this blog post?')">
+                                                <input type="hidden" name="id" value="<%= blog.id %>">
+                                                <button type="submit" class="btn-delete" style="padding: 6px 12px; font-size: 0.8rem;">
+                                                    <i class='bx bx-trash'></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ========== SETTINGS TAB ========== -->
+        <div id="tab-settings" class="tab-content">
+            <h1>System Settings</h1>
+
+            <div class="card">
+                <form action="/admin/settings/save" method="POST" style="max-width: 600px;">
+                    <h2 style="margin-bottom: 10px;"><i class='bx bxl-youtube' style="color: #ef4444;"></i> YouTube Video Management</h2>
+                    <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
+                        Set the YouTube video displayed on the Home Page. The video will NOT auto-update — only the URL you enter here will be shown.
+                    </p>
+
+                    <div class="form-field" style="margin-bottom: 20px;">
+                        <label>YouTube Video URL</label>
+                        <input type="url" name="youtubeVideoUrl" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..." value="<%= settings.youtubeVideoUrl || '' %>" style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #1e293b; outline: none;">
+                        <small style="color: #64748b; margin-top: 6px; display: block;">Accepts: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID</small>
+                    </div>
+                    <% if (settings.youtubeVideoUrl) { %>
+                    <div style="margin-bottom: 30px; padding: 14px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <p style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; color: #1e293b;"><i class='bx bx-check-circle' style="color: #10b981;"></i> Currently Active Video</p>
+                        <p style="font-size: 0.85rem; color: #64748b; word-break: break-all;"><%= settings.youtubeVideoUrl %></p>
+                    </div>
+                    <% } else { %>
+                        <div style="margin-bottom: 30px;"></div>
+                    <% } %>
+
+                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin-bottom: 30px;">
+
+                    <h2 style="margin-bottom: 10px;"><i class='bx bx-cog'></i> SMS Gateway Settings</h2>
+                    <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
+                        Enter your Fast2SMS API Authorization key to enable real-time OTP SMS sending to students. If left blank, the system will fallback to log the OTP in the console.
+                    </p>
+
+                    <div class="form-field" style="margin-bottom: 20px;">
+                        <label>Fast2SMS API Key</label>
+                        <input type="text" name="smsApiKey" placeholder="Enter Fast2SMS API Key" value="<%= settings.smsApiKey || '' %>" style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #1e293b; outline: none;">
+                    </div>
+                    <button type="submit" class="btn-create" style="margin-top: 10px;">
+                        <i class='bx bx-save'></i> Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========== REVIEWS TAB ========== -->
+        <div id="tab-reviews" class="tab-content">
+            <h1>Reviews & Testimonials Management</h1>
+            
+            <div class="card" style="margin-bottom: 24px;">
+                <h2 style="margin-bottom: 20px;"><i class='bx bx-plus-circle'></i> Add New Review</h2>
+                <form method="POST" action="/admin/review/create">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <div class="form-field">
+                            <label>Reviewer Name *</label>
+                            <input type="text" name="reviewerName" required placeholder="e.g. Amit Sharma">
+                        </div>
+                        <div class="form-field">
+                            <label>Rating (1-5)</label>
+                            <select name="rating" style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #1e293b; outline: none;">
+                                <option value="5" selected>5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-field" style="margin-bottom: 16px;">
+                        <label>Review Text *</label>
+                        <textarea name="reviewText" required rows="3" placeholder="Enter the review text..." style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; font-family: inherit; outline: none; resize: vertical;"></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <div class="form-field">
+                            <label>Source</label>
+                            <select name="source" style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #1e293b; outline: none;">
+                                <option value="Google">Google Review</option>
+                                <option value="Manual">Manual / Testimonial</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Date</label>
+                            <input type="text" name="date" placeholder="e.g. August 2026">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-create"><i class='bx bx-plus'></i> Add Review</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2><i class='bx bx-star'></i> Existing Reviews (<%= reviews.length %>)</h2>
+                <% if (reviews.length > 0) { %>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Reviewer</th><th>Rating</th><th>Text</th><th>Source</th><th>Date</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <% reviews.forEach(function(r) { %>
+                            <tr>
+                                <td><strong><%= r.reviewerName %></strong></td>
+                                <td><%= r.rating %> ⭐</td>
+                                <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= r.reviewText %></td>
+                                <td><span class="badge active" style="background: rgba(99,102,241,0.1); color:#6366f1;"><%= r.source || 'Google' %></span></td>
+                                <td><%= r.date || '-' %></td>
+                                <td>
+                                    <form method="POST" action="/admin/review/delete" style="display:inline;">
+                                        <input type="hidden" name="id" value="<%= r.id %>">
+                                        <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')"><i class='bx bx-trash'></i> Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <% } else { %>
+                <div class="empty-state">
+                    <i class='bx bx-star'></i>
+                    <p>No reviews yet. Add your first review above.</p>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ========== BROCHURES TAB ========== -->
+        <div id="tab-brochures" class="tab-content">
+            <h1>Course Brochures Management</h1>
+            
+            <div class="card" style="margin-bottom: 24px;">
+                <h2 style="margin-bottom: 10px;"><i class='bx bx-upload'></i> Set Brochure URL</h2>
+                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
+                    Set a downloadable brochure URL (Google Drive link, PDF URL, etc.) for each course. Students will see a "Download Brochure" button on course pages.
+                </p>
+                <form method="POST" action="/admin/brochure/save">
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 20px;">
+                        <div class="form-field">
+                            <label>Select Course</label>
+                            <select name="courseId" required style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #1e293b; outline: none;">
+                                <option value="">-- Select Course --</option>
+                                <% Object.keys(coursesData).forEach(function(key) { %>
+                                    <option value="<%= key %>"><%= coursesData[key].title %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Brochure URL</label>
+                            <input type="url" name="brochureUrl" required placeholder="https://drive.google.com/file/d/... or direct PDF URL" style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #1e293b; outline: none;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-create"><i class='bx bx-save'></i> Save Brochure</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2><i class='bx bx-file'></i> Course Brochure Status</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Course</th><th>Brochure URL</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <% Object.keys(coursesData).forEach(function(key) { %>
+                            <% var brochure = brochures.find(function(b) { return b.courseId === key; }); %>
+                            <tr>
+                                <td><strong><%= coursesData[key].title %></strong></td>
+                                <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <% if (brochure) { %>
+                                        <a href="<%= brochure.brochureUrl %>" target="_blank" style="color: #6366f1; text-decoration: none;"><%= brochure.brochureUrl %></a>
+                                    <% } else { %>
+                                        <span style="color: #94a3b8;">Not set</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (brochure) { %>
+                                        <span class="badge active">Active</span>
+                                    <% } else { %>
+                                        <span class="badge used" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">Missing</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (brochure) { %>
+                                    <form method="POST" action="/admin/brochure/delete" style="display:inline;">
+                                        <input type="hidden" name="courseId" value="<%= key %>">
+                                        <button type="submit" class="btn-delete" onclick="return confirm('Remove brochure for this course?')"><i class='bx bx-trash'></i> Remove</button>
+                                    </form>
+                                    <% } else { %>
+                                        <span style="color: #94a3b8; font-size: 0.8rem;">-</span>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabName, el) {
+            if (window.event) {
+                window.event.preventDefault();
+            }
+
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+            // Show selected tab
+            const targetTabContent = document.getElementById('tab-' + tabName);
+            if (targetTabContent) {
+                targetTabContent.classList.add('active');
+            }
+
+            // Update sidebar active states
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            if (el) {
+                el.classList.add('active');
+            }
+
+            // Close mobile sidebar
+            document.querySelector('.admin-sidebar').classList.remove('open');
+        }
+
+        // Auto-switch to correct tab if hash is present (e.g. #settings)
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const targetTab = document.querySelector(`.sidebar-nav a[data-tab="${hash}"]`);
+                if (targetTab) {
+                    switchTab(hash, targetTab);
+                }
+            }
+
+            // Admissions Fees Toggle Action
+            document.querySelectorAll('.fees-toggle').forEach(checkbox => {
+                checkbox.addEventListener('change', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const isChecked = e.target.checked;
+                    const label = e.target.nextElementSibling;
+                    
+                    try {
+                        const response = await fetch('/admin/admission/toggle-fees', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id, feesPaid: isChecked ? 'true' : 'false' })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            label.textContent = isChecked ? 'Paid' : 'Unpaid';
+                            label.style.color = isChecked ? 'var(--green)' : 'var(--red)';
+                        } else {
+                            alert(result.message || 'Error updating status.');
+                            e.target.checked = !isChecked; // revert
+                        }
+                    } catch (err) {
+                        alert('Server error updating status.');
+                        e.target.checked = !isChecked; // revert
+                    }
+                });
+            });
+        });
+
+        // Generate a random 10-character coupon code with letters, numbers, and symbols
+        function generateRandomCoupon() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!*&';
+            let result = '';
+            for (let i = 0; i < 10; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('couponCodeInput').value = result;
+        }
+
+        // Draw and download the coupon ticket card as an image
+        function downloadCoupon(code, percent) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 600;
+            canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+
+            // 1. Draw Background Gradient
+            const gradient = ctx.createLinearGradient(0, 0, 600, 300);
+            gradient.addColorStop(0, '#1e293b'); // Dark Slate
+            gradient.addColorStop(1, '#0f172a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 600, 300);
+
+            // 2. Draw Dashed Border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([8, 8]);
+            ctx.strokeRect(15, 15, 570, 270);
+            ctx.setLineDash([]); // Reset dash
+
+            // 3. Draw Ticket Punch Circles (visually matches the card shape)
+            ctx.fillStyle = '#f0f2f5'; // Dashboard body bg color
+            ctx.beginPath();
+            ctx.arc(0, 150, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(600, 150, 15, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 4. Draw Branding & Title
+            ctx.fillStyle = '#6366f1'; // primary purple
+            ctx.font = 'bold 13px sans-serif';
+            ctx.fillText('PROGRESS IT INSTITUTE', 40, 55);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.fillText('ADMISSION DISCOUNT VOUCHER', 40, 72);
+
+            // 5. Draw Discount
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 58px sans-serif';
+            ctx.fillText(percent + '% OFF', 40, 145);
+
+            // 6. Draw Instructions
+            ctx.fillStyle = '#64748b';
+            ctx.font = '500 11px sans-serif';
+            ctx.fillText('Apply code during online registration for instant discount.', 40, 240);
+            ctx.fillText('Valid for one-time use only.', 40, 255);
+
+            // 7. Draw Code Box on the right side
+            const boxX = 390;
+            const boxY = 70;
+            const boxW = 170;
+            const boxH = 140;
+
+            // Box background
+            ctx.fillStyle = 'rgba(99, 102, 241, 0.08)';
+            ctx.fillRect(boxX, boxY, boxW, boxH);
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.25)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+            // Coupon Code label
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('COUPON CODE', boxX + boxW / 2, boxY + 30);
+
+            // Coupon Code text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 18px monospace';
+            ctx.fillText(code, boxX + boxW / 2, boxY + 75);
+
+            // Coupon Status
+            ctx.fillStyle = '#10b981'; // Active Green
+            ctx.font = 'bold 10px sans-serif';
+            ctx.fillText('● ACTIVE VOUCHER', boxX + boxW / 2, boxY + 115);
+
+            // Trigger the download of PNG
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `Coupon_${code}_${percent}pct.png`;
+            link.href = dataUrl;
+            link.click();
+        }
+
+        // Generic client-side HTML table sorter
+        function sortTable(tableId, colIndex, dataType) {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return;
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            if (rows.length === 0) return;
+
+            // Determine current sorting direction
+            const header = table.querySelectorAll('thead th')[colIndex];
+            const isAsc = !header.classList.contains('sort-asc');
+            
+            // Reset sorting classes on all headers in this table
+            table.querySelectorAll('thead th').forEach(th => {
+                th.classList.remove('sort-asc', 'sort-desc');
+                const icon = th.querySelector('.sort-icon');
+                if (icon) {
+                    icon.className = 'bx bx-sort-alt-2 sort-icon';
+                }
+            });
+
+            // Set sorting class on active header
+            header.classList.add(isAsc ? 'sort-asc' : 'sort-desc');
+            const currentIcon = header.querySelector('.sort-icon');
+            if (currentIcon) {
+                currentIcon.className = isAsc ? 'bx bx-chevron-up sort-icon' : 'bx bx-chevron-down sort-icon';
+            }
+
+            // Sort rows
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[colIndex].innerText.trim();
+                const cellB = rowB.cells[colIndex].innerText.trim();
+
+                if (dataType === 'date') {
+                    const dateA = Date.parse(cellA) || 0;
+                    const dateB = Date.parse(cellB) || 0;
+                    return isAsc ? dateA - dateB : dateB - dateA;
+                }
+
+                // Default string comparison
+                return isAsc 
+                    ? cellA.localeCompare(cellB, undefined, { numeric: true, sensitivity: 'base' })
+                    : cellB.localeCompare(cellA, undefined, { numeric: true, sensitivity: 'base' });
+            });
+
+            // Re-render rows
+            rows.forEach(row => tbody.appendChild(row));
+            
+            // Maintain row indexing
+            rows.forEach((row, i) => {
+                if (row.cells[0]) {
+                    row.cells[0].innerText = i + 1;
+                }
+            });
+        }
+
+        // Copy coupon code to clipboard
+        function copyCoupon(code, btn) {
+            navigator.clipboard.writeText(code).then(() => {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = "<i class='bx bx-check'></i>";
+                btn.style.background = "#10b981"; // success green
+                btn.style.borderColor = "#10b981";
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = "rgba(255,255,255,0.18)";
+                    btn.style.borderColor = "rgba(255,255,255,0.3)";
+                }, 2000);
+            }).catch(err => {
+                console.error("Failed to copy coupon code:", err);
+            });
+        }
+
+        // Share coupon details
+        function shareCoupon(code, discount) {
+            const shareText = `Use coupon code "${code}" to get an instant ${discount}% discount on professional IT training programs at Progress IT Institute Pune! Register here: ${window.location.origin}/admission`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Progress IT Institute Discount Offer',
+                    text: shareText,
+                    url: window.location.origin + '/admission'
+                })
+                .then(() => console.log('Shared coupon successfully.'))
+                .catch((error) => console.log('Error sharing:', error));
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Coupon details and link copied to clipboard! Paste it to share with others.');
+                }).catch(err => {
+                    // Fallback to WhatsApp
+                    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
+        }
+
+        // Populate Blog Form for editing
+        function populateBlogForEdit(blog) {
+            document.getElementById('blogFormHeading').innerHTML = "<i class='bx bx-edit-alt'></i> Edit Blog Post";
+            document.getElementById('blogCrudForm').action = "/admin/blog/update";
+            
+            document.getElementById('blogFormId').value = blog.id;
+            document.getElementById('blogFormTitle').value = blog.title;
+            document.getElementById('blogFormCategory').value = blog.category;
+            document.getElementById('blogFormReadTime').value = blog.readTime;
+            document.getElementById('blogFormSummary').value = blog.summary;
+            document.getElementById('blogFormContent').value = blog.content;
+            
+            document.getElementById('blogFormSubmitBtn').innerHTML = "<i class='bx bx-save'></i> Update Blog Post";
+            document.getElementById('blogFormCancelBtn').style.display = "block";
+            
+            document.getElementById('blogFormHeading').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset Blog Form
+        function resetBlogForm() {
+            document.getElementById('blogFormHeading').innerHTML = "<i class='bx bx-plus-circle'></i> Add New Blog Post";
+            document.getElementById('blogCrudForm').action = "/admin/blog/create";
+            
+            document.getElementById('blogFormId').value = "";
+            document.getElementById('blogFormTitle').value = "";
+            document.getElementById('blogFormCategory').value = "";
+            document.getElementById('blogFormReadTime').value = "5 Min Read";
+            document.getElementById('blogFormSummary').value = "";
+            document.getElementById('blogFormContent').value = "";
+            
+            document.getElementById('blogFormSubmitBtn').innerHTML = "<i class='bx bx-plus'></i> Create Blog Post";
+            document.getElementById('blogFormCancelBtn').style.display = "none";
+        }
+    </script>
+</body>
+</html>

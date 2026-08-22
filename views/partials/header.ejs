@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Progress IT Institute - Empowering Futures Through IT Education in Pune. SAP, Python, Web Development, DevOps, and more.">
+    <title><%= title %></title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="nav-container">
+            <div class="logo-wrapper">
+                <a href="/" class="logo" style="background: transparent; padding: 0; box-shadow: none;">
+                    <img src="/images/logo.png" alt="Progress IT Institute" style="height: 55px; object-fit: contain;">
+                </a>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="/" class="<%= path === '/' ? 'active' : '' %>">Home</a>
+                <a href="/courses" class="<%= path === '/courses' ? 'active' : '' %>">Courses</a>
+                <a href="/gallery" class="<%= path === '/gallery' ? 'active' : '' %>">Gallery & Placements</a>
+                <a href="/admission" class="<%= path === '/admission' ? 'active' : '' %> admission-link-glowing">Admission <span class="badge-new">NEW</span></a>
+                <a href="/careers" class="<%= path === '/careers' ? 'active' : '' %>">Careers</a>
+                <a href="/blog" class="<%= path === '/blog' ? 'active' : '' %>">Blog</a>
+                <a href="/about" class="<%= path === '/about' ? 'active' : '' %>">About Us</a>
+                <a href="/contact" class="<%= path === '/contact' ? 'active' : '' %>">Contact</a>
+                <button class="btn btn-primary" onclick="openEnquiryPopup()">
+                    <i class='bx bx-edit-alt'></i> Enquire Now
+                </button>
+            </nav>
+            
+            <!-- Mobile Toggle -->
+            <button class="mobile-toggle" aria-label="Toggle navigation">
+                <i class='bx bx-menu'></i>
+            </button>
+        </div>
+    </div>
+</header>

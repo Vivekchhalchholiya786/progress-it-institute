@@ -1,0 +1,66 @@
+<%- include('partials/header') %>
+
+<main style="padding-top: 100px; min-height: 90vh; background: var(--gradient-mesh);">
+    <div class="container" style="padding-bottom: 4rem;">
+        
+        <!-- Page Title -->
+        <div class="section-title fade-in" style="margin-bottom: 4rem;">
+            <h2>Knowledge & <span class="text-gradient">Tech Insights</span></h2>
+            <p>Stay updated with trending technologies, career advice, and global certifications curated by expert trainers.</p>
+        </div>
+
+        <!-- Blog Cards Grid -->
+        <div class="grid grid-2 fade-in" style="gap: 3rem;">
+            <% if (blogs.length === 0) { %>
+                <div class="card" style="grid-column: span 2; text-align: center; padding: 4rem;">
+                    <i class='bx bx-book-open' style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                    <p style="color: var(--text-muted); font-size: 1.1rem;">No articles available at the moment. Please check back later!</p>
+                </div>
+            <% } else { %>
+                <% blogs.forEach((blog, index) => { 
+                    // Choose gradient style based on category
+                    let bgGradient = 'linear-gradient(135deg, #a855f7, #6366f1)';
+                    let tagClass = 'purple';
+                    const categoryLower = blog.category.toLowerCase();
+                    if (categoryLower.includes('cloud') || categoryLower.includes('devops')) {
+                        bgGradient = 'linear-gradient(135deg, #3b82f6, #06b6d4)';
+                        tagClass = 'blue';
+                    } else if (categoryLower.includes('hot') || categoryLower.includes('security') || categoryLower.includes('ai')) {
+                        bgGradient = 'linear-gradient(135deg, #ec4899, #f43f5e)';
+                        tagClass = 'red';
+                    } else if (categoryLower.includes('prog') || categoryLower.includes('py') || categoryLower.includes('code')) {
+                        bgGradient = 'linear-gradient(135deg, #f97316, #eab308)';
+                        tagClass = 'orange';
+                    }
+                %>
+                    <div class="card blog-card" onclick="window.location.href='/blog/<%= blog.slug %>'" style="cursor: pointer;">
+                        <div class="blog-header-img" style="background: <%= bgGradient %>; height: 200px; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <% if (tagClass === 'purple') { %>
+                                <i class='bx bx-data' style="font-size: 5rem; color: white;"></i>
+                            <% } else if (tagClass === 'blue') { %>
+                                <i class='bx bx-cloud' style="font-size: 5rem; color: white;"></i>
+                            <% } else if (tagClass === 'red') { %>
+                                <i class='bx bx-shield-quarter' style="font-size: 5rem; color: white;"></i>
+                            <% } else { %>
+                                <i class='bx bxl-python' style="font-size: 5rem; color: white;"></i>
+                            <% } %>
+                            <span class="blog-tag <%= tagClass %>"><%= blog.category %></span>
+                        </div>
+                        <div style="padding: 2rem;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted);">
+                                <span><i class='bx bx-calendar'></i> <%= blog.date %></span>
+                                <span><i class='bx bx-time-five'></i> <%= blog.readTime %></span>
+                            </div>
+                            <h3 style="margin-bottom: 1rem; font-size: 1.5rem; color: var(--text-main);"><%= blog.title %></h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><%= blog.summary %></p>
+                            <a href="/blog/<%= blog.slug %>" class="btn btn-outline" style="width: 100%; text-decoration: none; text-align: center; display: block;">Read Full Article <i class='bx bx-book-open'></i></a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+    </div>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,118 @@
+<%- include('partials/header') %>
+
+<main style="padding-top: 100px; min-height: 90vh; background: var(--gradient-mesh);">
+    <div class="container" style="padding-bottom: 4rem;">
+        
+        <!-- Back Navigation -->
+        <div style="margin-bottom: 2rem;" class="fade-in">
+            <a href="/blog" style="color: var(--primary); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; transition: color 0.2s;">
+                <i class='bx bx-left-arrow-alt' style="font-size: 1.3rem;"></i> Back to Blog & Articles
+            </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 3rem; align-items: flex-start;" class="fade-in">
+            
+            <!-- Left: Blog Article Body -->
+            <article class="card" style="background: white; padding: 3.5rem; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-md);">
+                
+                <!-- Blog Tag -->
+                <span class="blog-tag text-gradient" style="
+                    display: inline-block; 
+                    background: rgba(37, 99, 235, 0.08); 
+                    color: var(--primary); 
+                    padding: 0.4rem 1.2rem; 
+                    border-radius: var(--radius-full); 
+                    font-size: 0.8rem; 
+                    font-weight: 700; 
+                    text-transform: uppercase; 
+                    letter-spacing: 1.5px;
+                    margin-bottom: 1.5rem;
+                ">
+                    <%= blog.category %>
+                </span>
+
+                <!-- Blog Title -->
+                <h1 style="font-size: 2.60rem; font-weight: 900; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.25;">
+                    <%= blog.title %>
+                </h1>
+
+                <!-- Meta Info -->
+                <div style="display: flex; gap: 2rem; margin-bottom: 2.5rem; font-size: 0.95rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+                    <span><i class='bx bx-calendar' style="vertical-align:middle; margin-right:4px;"></i> <%= blog.date %></span>
+                    <span><i class='bx bx-time-five' style="vertical-align:middle; margin-right:4px;"></i> <%= blog.readTime %></span>
+                    <span><i class='bx bx-user' style="vertical-align:middle; margin-right:4px;"></i> By Academic Experts</span>
+                </div>
+
+                <!-- Blog Rich Content -->
+                <div class="blog-rich-content" style="color: var(--text-main); line-height: 1.9; font-size: 1.1rem;">
+                    <%- blog.content %>
+                </div>
+
+                <!-- Share Widget -->
+                <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+                    <span style="font-weight: 700; color: var(--text-main);">Enjoyed this read? Share with peers:</span>
+                    <div style="display: flex; gap: 0.8rem;">
+                        <a href="https://wa.me/?text=Check%20out%20this%20interesting%20article%20on%20Progress%20IT%20Institute%20pune:%20<%= encodeURIComponent(blog.title) %>%20-%20<%= encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '') %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+                            <i class='bx bxl-whatsapp' style="font-size: 1.2rem; color: #25d366;"></i> WhatsApp
+                        </a>
+                        <button onclick="navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied to clipboard!'))" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+                            <i class='bx bx-link' style="font-size: 1.2rem;"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+
+            </article>
+
+            <!-- Right: Sidebar Cards -->
+            <aside>
+                <!-- Admission Portal Card -->
+                <div class="card" style="background: white; padding: 2.2rem; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-md); margin-bottom: 2rem; text-align: center;">
+                    <div style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;">
+                        <i class='bx bx-id-card'></i>
+                    </div>
+                    <h3 style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 0.8rem;">Ready to Advance Your IT Skills?</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.8rem;">
+                        Join our expert-led batches in Nigdi, Pune. Secure your seat through the online portal and claim exclusive course discount coupons!
+                    </p>
+                    <a href="/admission" class="btn btn-primary" style="width: 100%; display: block; border: none; text-decoration: none;">
+                        Access Admission Portal <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+
+                <!-- Quick Help Card -->
+                <div class="card" style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); color: white; padding: 2.2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+                    <h3 style="font-size: 1.35rem; color: white; margin-bottom: 0.8rem;"><i class='bx bx-support'></i> Direct Counseling</h3>
+                    <p style="color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.8rem;">
+                        Talk directly to our career counselors on phone or WhatsApp for syllabus details, batches, and placement inquiries.
+                    </p>
+                    <a href="https://wa.me/919766767389" target="_blank" class="btn" style="background: white; color: var(--primary); width: 100%; display: block; text-decoration: none; font-weight: 700; border: none; text-align: center; border-radius: 8px;">
+                        <i class='bx bxl-whatsapp'></i> Chat on WhatsApp
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+        
+    </div>
+</main>
+
+<style>
+    /* Styling adjustments for markdown/rich text elements */
+    .blog-rich-content h2, .blog-rich-content h3, .blog-rich-content h4 {
+        color: var(--secondary);
+        margin: 2rem 0 1rem;
+        font-weight: 800;
+    }
+    .blog-rich-content p {
+        margin-bottom: 1.5rem;
+    }
+    .blog-rich-content ul, .blog-rich-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+    }
+    .blog-rich-content li {
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<%- include('partials/footer') %>

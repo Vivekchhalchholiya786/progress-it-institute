@@ -1,0 +1,827 @@
+<%- include('partials/header') %>
+
+<main>
+    <!-- Glowing Background Particles -->
+    <div class="hero-glow-particles"></div>
+
+    <!-- Modern Hero Slider Section -->
+    <section class="hero-slider-section">
+        <div class="slider-container" id="heroSlider">
+            <!-- Slide 1: Original Front Page Content + Stunning 3D Rotating Cube -->
+            <div class="slide active" id="slide-1">
+                <div class="container slide-grid">
+                    <div class="hero-content">
+                        <h1><span class="text-gradient">Empowering Futures</span> Through IT Education</h1>
+                        <p>Welcome to Progress IT Institute in Pune. Advance your career with in-demand certifications in SAP, Python, Cloud Computing, Cyber Security, and more.</p>
+                        <div class="hero-cta-btns">
+                            <button class="btn btn-primary" onclick="openEnquiryPopup()">Start Your Journey <i class='bx bx-right-arrow-alt'></i></button>
+                            <a href="/courses" class="btn btn-outline">Explore Courses <i class='bx bx-compass'></i></a>
+                        </div>
+                    </div>
+                    <div class="hero-3d-visual">
+                        <div class="cube-container">
+                            <div class="cube">
+                                <div class="face front"><i class='bx bxl-react'></i></div>
+                                <div class="face back"><i class='bx bxl-python'></i></div>
+                                <div class="face right"><i class='bx bxl-aws'></i></div>
+                                <div class="face left"><i class='bx bx-data'></i></div>
+                                <div class="face top"><i class='bx bx-code-alt'></i></div>
+                                <div class="face bottom"><i class='bx bx-cloud'></i></div>
+                            </div>
+                        </div>
+                        <div class="glow-sphere"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Creative Design with Embedded YouTube Videos -->
+            <div class="slide" id="slide-2">
+                <div class="container">
+                    <div class="slide-header">
+                        <h2>Learn Anywhere, <span class="text-gradient">Excel Everywhere</span></h2>
+                        <p>Watch our class demos and student success interviews to experience our training quality.</p>
+                    </div>
+                    <div class="videos-grid">
+                        <div class="video-card">
+                            <div class="video-wrapper">
+                                <iframe src="https://www.youtube.com/embed/<%= latestVideoId %>" title="Latest Video from Progress IT Institute" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                            <div class="video-info">
+                                <h3><i class='bx bxl-youtube' style="color:#ef4444;"></i> Latest Training & Career Guides</h3>
+                                <p>Watch the latest uploaded video from our official YouTube channel on SAP, Cloud, and IT career preparation guidance.</p>
+                            </div>
+                        </div>
+                        <div class="accreditation-card card" style="padding: 2rem;">
+                            <h3 style="font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--text-main);"><i class='bx bx-award' style="color: var(--primary); font-size: 1.6rem;"></i> Licenses & Accreditations</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <!-- ISO 9001:2015 Badge -->
+                                <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #bfdbfe; border-radius: 12px; padding: 1rem; text-align: center; transition: transform 0.3s ease;">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" style="margin: 0 auto 0.5rem;">
+                                        <circle cx="24" cy="24" r="22" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+                                        <circle cx="24" cy="24" r="18" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                                        <text x="24" y="20" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="800" font-family="Outfit">ISO</text>
+                                        <text x="24" y="30" text-anchor="middle" fill="#2563eb" font-size="6" font-weight="600" font-family="Outfit">9001:2015</text>
+                                        <path d="M16 36 L24 40 L32 36" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: #1e40af;">ISO 9001:2015</p>
+                                    <p style="font-size: 0.65rem; color: #475569;">Certified Institute</p>
+                                </div>
+                                <!-- Govt of India Badge -->
+                                <div style="background: linear-gradient(135deg, #fef3c7, #fde68a33); border: 1px solid #fbbf24; border-radius: 12px; padding: 1rem; text-align: center; transition: transform 0.3s ease;">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" style="margin: 0 auto 0.5rem;">
+                                        <polygon points="24,2 28,16 44,16 31,26 35,40 24,32 13,40 17,26 4,16 20,16" fill="#f59e0b" opacity="0.15" stroke="#f59e0b" stroke-width="1.5"/>
+                                        <circle cx="24" cy="21" r="10" fill="none" stroke="#d97706" stroke-width="1.5"/>
+                                        <text x="24" y="19" text-anchor="middle" fill="#92400e" font-size="5" font-weight="800" font-family="Outfit">GOVT</text>
+                                        <text x="24" y="25" text-anchor="middle" fill="#b45309" font-size="4" font-weight="600" font-family="Outfit">OF INDIA</text>
+                                    </svg>
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: #92400e;">Govt. of India</p>
+                                    <p style="font-size: 0.65rem; color: #475569;">Recognized</p>
+                                </div>
+                                <!-- MSME Badge -->
+                                <div style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 1px solid #6ee7b7; border-radius: 12px; padding: 1rem; text-align: center; transition: transform 0.3s ease;">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" style="margin: 0 auto 0.5rem;">
+                                        <rect x="6" y="6" width="36" height="36" rx="8" fill="none" stroke="#10b981" stroke-width="2"/>
+                                        <rect x="10" y="10" width="28" height="28" rx="5" fill="#10b981" opacity="0.1"/>
+                                        <text x="24" y="22" text-anchor="middle" fill="#065f46" font-size="9" font-weight="800" font-family="Outfit">MSME</text>
+                                        <text x="24" y="32" text-anchor="middle" fill="#047857" font-size="5" font-weight="600" font-family="Outfit">REGISTERED</text>
+                                    </svg>
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: #065f46;">MSME Registered</p>
+                                    <p style="font-size: 0.65rem; color: #475569;">Organization</p>
+                                </div>
+                                <!-- NSDC / Skill India Badge -->
+                                <div style="background: linear-gradient(135deg, #faf5ff, #ede9fe); border: 1px solid #c4b5fd; border-radius: 12px; padding: 1rem; text-align: center; transition: transform 0.3s ease;">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" style="margin: 0 auto 0.5rem;">
+                                        <circle cx="24" cy="24" r="20" fill="none" stroke="#7c3aed" stroke-width="2"/>
+                                        <path d="M18 28 L24 18 L30 28 Z" fill="#7c3aed" opacity="0.15" stroke="#7c3aed" stroke-width="1.5"/>
+                                        <text x="24" y="36" text-anchor="middle" fill="#5b21b6" font-size="5" font-weight="800" font-family="Outfit">NSDC</text>
+                                        <circle cx="24" cy="12" r="3" fill="#7c3aed" opacity="0.3"/>
+                                    </svg>
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: #5b21b6;">NSDC Partner</p>
+                                    <p style="font-size: 0.65rem; color: #475569;">Skill India</p>
+                                </div>
+                            </div>
+                            <!-- Global Certification Banner -->
+                            <div style="margin-top: 1rem; background: linear-gradient(135deg, #1e40af, #2563eb); border-radius: 10px; padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                                <svg width="28" height="28" viewBox="0 0 28 28">
+                                    <circle cx="14" cy="14" r="12" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                                    <ellipse cx="14" cy="14" rx="6" ry="12" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                                    <line x1="2" y1="14" x2="26" y2="14" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                                    <circle cx="14" cy="14" r="3" fill="#fbbf24"/>
+                                </svg>
+                                <div>
+                                    <p style="font-size: 0.8rem; font-weight: 700; color: white;">Global Certification Vendor Partner</p>
+                                    <p style="font-size: 0.65rem; color: rgba(255,255,255,0.7);">Internationally Recognized Programs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Courses Offered & Integrated Query Entry Box -->
+            <div class="slide" id="slide-3">
+                <div class="container slide-grid">
+                    <div class="courses-mini-list">
+                        <div class="slide-header" style="text-align: left; padding: 0;">
+                            <h2>Our Specialized <span class="text-gradient">IT Portfolios</span></h2>
+                            <p>Select from global leading professional certifications to boost your IT career.</p>
+                        </div>
+                        <div class="mini-courses-grid">
+                            <div class="mini-course-item">
+                                <div class="item-icon green"><i class='bx bx-building-house'></i></div>
+                                <div>
+                                    <h4>SAP ERP Modules</h4>
+                                    <p>FICO, MM, SD, PP, ABAP, SuccessFactors, BASIS, HANA</p>
+                                </div>
+                            </div>
+                            <div class="mini-course-item">
+                                <div class="item-icon blue"><i class='bx bx-bot'></i></div>
+                                <div>
+                                    <h4>Advanced AI & GenAI</h4>
+                                    <p>Agentic AI, LLM RAG, LangChain, OpenAI</p>
+                                </div>
+                            </div>
+                            <div class="mini-course-item">
+                                <div class="item-icon purple"><i class='bx bx-cloud'></i></div>
+                                <div>
+                                    <h4>AWS & Azure Cloud</h4>
+                                    <p>DevOps Pipelines, Infrastructure (Terraform)</p>
+                                </div>
+                            </div>
+                            <div class="mini-course-item">
+                                <div class="item-icon orange"><i class='bx bx-line-chart'></i></div>
+                                <div>
+                                    <h4>Data Science & Analytics</h4>
+                                    <p>Databricks, PySpark, Python, Power BI</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integrated side query box -->
+                    <div class="integrated-query-box">
+                        <h3>Quick Admissions Inquiry</h3>
+                        <p>Have questions about batches, fees, or coupon codes? Send us a quick query!</p>
+                        <form id="slideQueryForm" class="slide-query-form">
+                            <div class="form-group-row">
+                                <input type="text" id="slideName" required placeholder="Full Name *">
+                            </div>
+                            <div class="form-group-row">
+                                <input type="tel" id="slidePhone" required placeholder="Phone Number *">
+                            </div>
+                            <div class="form-group-row">
+                                <select id="slideCourse" required>
+                                    <option value="" disabled selected>Course of Interest *</option>
+                                    <optgroup label="SAP ERP Modules">
+                                        <option value="SAP FICO">SAP FICO (Financials)</option>
+                                        <option value="SAP MM">SAP MM (Materials Mgmt)</option>
+                                        <option value="SAP SD">SAP SD (Sales & Dist)</option>
+                                        <option value="SAP PP">SAP PP (Prod Planning)</option>
+                                        <option value="SAP ABAP">SAP ABAP (Programming)</option>
+                                        <option value="SAP SuccessFactors / HCM">SAP SuccessFactors</option>
+                                        <option value="SAP BASIS">SAP BASIS (Admin)</option>
+                                        <option value="SAP HANA">SAP HANA (Database)</option>
+                                    </optgroup>
+                                    <optgroup label="Advanced Tech & Portfolios">
+                                        <option value="Agentic AI">Agentic AI</option>
+                                        <option value="Advanced Generative AI">Advanced Generative AI</option>
+                                        <option value="Data Science with AI">Data Science with AI</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="AWS DevOps">AWS DevOps</option>
+                                        <option value="Databricks">Databricks</option>
+                                        <option value="Azure Cloud">Azure Cloud</option>
+                                        <option value="Data Analytics">Data Analytics</option>
+                                        <option value="Financial Analyst">Financial Analyst</option>
+                                        <option value="PySpark">PySpark</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group-row">
+                                <textarea id="slideMessage" rows="2" placeholder="Your Message..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                Send Query <i class='bx bx-paper-plane'></i>
+                            </button>
+                            <div id="slideFormMsg" class="slide-form-msg"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Arrows -->
+        <button class="slider-btn prev-btn" id="prevSlideBtn" aria-label="Previous Slide"><i class='bx bx-chevron-left'></i></button>
+        <button class="slider-btn next-btn" id="nextSlideBtn" aria-label="Next Slide"><i class='bx bx-chevron-right'></i></button>
+
+        <!-- Slider Indicators -->
+        <div class="slider-dots-container">
+            <span class="slide-dot active" data-slide="0"></span>
+            <span class="slide-dot" data-slide="1"></span>
+            <span class="slide-dot" data-slide="2"></span>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section style="background: white; padding: 4rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div class="container">
+            <div class="grid" style="grid-template-columns: repeat(4, 1fr); text-align: center;">
+                <div class="fade-in">
+                    <h3 style="font-size: 3rem; color: var(--primary);">50+</h3>
+                    <p style="color: var(--text-muted); font-weight: 500;">Courses Offered</p>
+                </div>
+                <div class="fade-in" style="transition-delay: 0.1s;">
+                    <h3 style="font-size: 3rem; color: var(--primary);">10k+</h3>
+                    <p style="color: var(--text-muted); font-weight: 500;">Students Trained</p>
+                </div>
+                <div class="fade-in" style="transition-delay: 0.2s;">
+                    <h3 style="font-size: 3rem; color: var(--primary);">100%</h3>
+                    <p style="color: var(--text-muted); font-weight: 500;">Placement Assistance</p>
+                </div>
+                <div class="fade-in" style="transition-delay: 0.3s;">
+                    <h3 style="font-size: 3rem; color: var(--primary);">4.9</h3>
+                    <p style="color: var(--text-muted); font-weight: 500;">Google Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us / About -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Why Choose Progress IT?</h2>
+                <p>We are dedicated to providing high-quality IT training across a wide range of fields. Our mission is to empower individuals with the skills needed to excel in the tech industry.</p>
+            </div>
+            
+            <div class="grid grid-3">
+                <div class="card fade-in">
+                    <div class="card-icon">
+                        <i class='bx bx-laptop'></i>
+                    </div>
+                    <h3>Expert Led Training</h3>
+                    <p style="color: var(--text-muted); margin-top: 1rem;">Learn from industry professionals with years of real-world experience in SAP, Python, and Cloud.</p>
+                </div>
+                
+                <div class="card fade-in" style="transition-delay: 0.1s;">
+                    <div class="card-icon">
+                        <i class='bx bx-briefcase-alt-2'></i>
+                    </div>
+                    <h3>Placement Support</h3>
+                    <p style="color: var(--text-muted); margin-top: 1rem;">We offer dedicated placement assistance, resume building, and interview preparation to jumpstart your career.</p>
+                </div>
+                
+                <div class="card fade-in" style="transition-delay: 0.2s;">
+                    <div class="card-icon">
+                        <i class='bx bx-certification'></i>
+                    </div>
+                    <h3>Global Certifications</h3>
+                    <p style="color: var(--text-muted); margin-top: 1rem;">Our curriculum is designed to help you easily pass global certification exams for various technologies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses Preview -->
+    <section style="background: var(--surface);">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Our Premium Courses</h2>
+                <p>Comprehensive training programs designed to meet current industry demands.</p>
+            </div>
+            
+            <div class="grid grid-3">
+                <div class="card fade-in">
+                    <div style="height: 150px; background: linear-gradient(135deg, #1e1b4b, #311042); border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3.2rem;">
+                        <i class='bx bx-building-house'></i>
+                    </div>
+                    <h3>SAP ERP Modules Specialization</h3>
+                    <p style="color: var(--text-muted); margin: 1rem 0;">Our flagship program covering SAP FICO, MM, SD, PP, ABAP, SuccessFactors, BASIS, and HANA with certification guidance.</p>
+                    <a href="/courses" class="btn btn-outline" style="width: 100%;">View Details</a>
+                </div>
+                
+                <div class="card fade-in" style="transition-delay: 0.1s;">
+                    <div style="height: 150px; background: linear-gradient(135deg, #4f46e5, #ec4899); border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3.2rem;">
+                        <i class='bx bx-bot'></i>
+                    </div>
+                    <h3>Agentic & Generative AI</h3>
+                    <p style="color: var(--text-muted); margin: 1rem 0;">Master LangChain, CrewAI, multi-agent pipelines, RAG, prompt architectures, and advanced AI technologies.</p>
+                    <a href="/courses" class="btn btn-outline" style="width: 100%;">View Details</a>
+                </div>
+                
+                <div class="card fade-in" style="transition-delay: 0.2s;">
+                    <div style="height: 150px; background: linear-gradient(135deg, #059669, #0891b2); border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3.2rem;">
+                        <i class='bx bx-data'></i>
+                    </div>
+                    <h3>Data Engineering & Cloud</h3>
+                    <p style="color: var(--text-muted); margin: 1rem 0;">Deep dive into Databricks workspaces, PySpark scripting, AWS DevOps architectures, and big data management.</p>
+                    <a href="/courses" class="btn btn-outline" style="width: 100%;">View Details</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;" class="fade-in">
+                <a href="/courses" class="btn btn-primary">View All Courses <i class='bx bx-right-arrow-alt'></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Placement Marquee Section -->
+    <section style="background: var(--surface); border-top: 1px solid var(--border); overflow: hidden;">
+        <div class="container">
+            <div class="section-title fade-in" style="margin-bottom: 2rem;">
+                <h2>Our Recent Placements</h2>
+                <p>Congratulations to our students for securing top roles in the IT industry.</p>
+            </div>
+        </div>
+        
+        <div class="marquee-container" style="padding-bottom: 0;">
+            <div class="marquee-content">
+                <!-- Line 1 Items -->
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic2.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Shivam Rathore</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP FICO Consultant</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic4.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Sarang Katakdeore</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP MM Analyst</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">RV</div>
+                        <div>
+                            <h4 style="margin: 0;">Rahul Verma</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Full Stack Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #f59e0b; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">PR</div>
+                        <div>
+                            <h4 style="margin: 0;">Priya Rajput</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Python Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic1.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Omkar Sawant</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP ABAP Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #e11d48; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">NS</div>
+                        <div>
+                            <h4 style="margin: 0;">Nikita Sharma</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Data Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic3.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Aman Gupta</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Azure Cloud Specialist</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #7c3aed; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">TM</div>
+                        <div>
+                            <h4 style="margin: 0;">Tanvi Mehta</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Business Analyst</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duplicated for Infinite Loop -->
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic2.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Shivam Rathore</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP FICO Consultant</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic4.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Sarang Katakdeore</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP MM Analyst</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">RV</div>
+                        <div>
+                            <h4 style="margin: 0;">Rahul Verma</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Full Stack Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #f59e0b; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">PR</div>
+                        <div>
+                            <h4 style="margin: 0;">Priya Rajput</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Python Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic1.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Omkar Sawant</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP ABAP Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #e11d48; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">NS</div>
+                        <div>
+                            <h4 style="margin: 0;">Nikita Sharma</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Data Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic3.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Aman Gupta</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Azure Cloud Specialist</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #7c3aed; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">TM</div>
+                        <div>
+                            <h4 style="margin: 0;">Tanvi Mehta</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Business Analyst</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="marquee-container" style="padding-top: 1rem;">
+            <div class="marquee-content reverse">
+                <!-- Line 2 Items -->
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #8b5cf6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">PJ</div>
+                        <div>
+                            <h4 style="margin: 0;">Pooja Joshi</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">AWS Cloud Engineer</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #ec4899; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SD</div>
+                        <div>
+                            <h4 style="margin: 0;">Sneha Deshmukh</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Data Scientist</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #14b8a6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AP</div>
+                        <div>
+                            <h4 style="margin: 0;">Aditya Patil</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">React Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">RK</div>
+                        <div>
+                            <h4 style="margin: 0;">Rohan Kulkarni</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">DevOps Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic5.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Vaibhav Chavan</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP SD Consultant</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #0ea5e9; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">MB</div>
+                        <div>
+                            <h4 style="margin: 0;">Megha Bhosale</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Power BI Analyst</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #d97706; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SJ</div>
+                        <div>
+                            <h4 style="margin: 0;">Sachin Jadhav</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Cyber Security Analyst</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #059669; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DP</div>
+                        <div>
+                            <h4 style="margin: 0;">Divya Patole</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">ML Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duplicated for Infinite Loop -->
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #8b5cf6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">PJ</div>
+                        <div>
+                            <h4 style="margin: 0;">Pooja Joshi</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">AWS Cloud Engineer</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #ec4899; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SD</div>
+                        <div>
+                            <h4 style="margin: 0;">Sneha Deshmukh</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Data Scientist</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #14b8a6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AP</div>
+                        <div>
+                            <h4 style="margin: 0;">Aditya Patil</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">React Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">RK</div>
+                        <div>
+                            <h4 style="margin: 0;">Rohan Kulkarni</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">DevOps Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/pic5.jpg" alt="Student" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Vaibhav Chavan</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">SAP SD Consultant</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #0ea5e9; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">MB</div>
+                        <div>
+                            <h4 style="margin: 0;">Megha Bhosale</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Power BI Analyst</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #d97706; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SJ</div>
+                        <div>
+                            <h4 style="margin: 0;">Sachin Jadhav</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">Cyber Security Analyst</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card marquee-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #059669; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DP</div>
+                        <div>
+                            <h4 style="margin: 0;">Divya Patole</h4>
+                            <span style="color: var(--primary); font-size: 0.875rem;">ML Engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hiring Partners Logo Marquee -->
+        <div class="container" style="margin-top: 3.5rem; margin-bottom: 1.5rem;">
+            <div class="section-title fade-in" style="margin-bottom: 0.5rem; text-align: center;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px;">Our Alumni Work at Leading Tech Companies</h3>
+            </div>
+        </div>
+        
+        <div class="partner-marquee-container" style="padding: 1.5rem 0; background: rgba(255, 255, 255, 0.02); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 1rem;">
+            <div class="partner-marquee-content">
+                <!-- Group 1 -->
+                <div class="partner-logo-item"><img src="/images/logos/tcs.svg" alt="TCS"></div>
+                <div class="partner-logo-item"><img src="/images/logos/infosys.svg" alt="Infosys"></div>
+                <div class="partner-logo-item"><img src="/images/logos/wipro.svg" alt="Wipro"></div>
+                <div class="partner-logo-item"><img src="/images/logos/accenture.svg" alt="Accenture"></div>
+                <div class="partner-logo-item"><img src="/images/logos/capgemini.svg" alt="Capgemini"></div>
+                <div class="partner-logo-item"><img src="/images/logos/cognizant.svg" alt="Cognizant"></div>
+                
+                <!-- Group 2 -->
+                <div class="partner-logo-item"><img src="/images/logos/tcs.svg" alt="TCS"></div>
+                <div class="partner-logo-item"><img src="/images/logos/infosys.svg" alt="Infosys"></div>
+                <div class="partner-logo-item"><img src="/images/logos/wipro.svg" alt="Wipro"></div>
+                <div class="partner-logo-item"><img src="/images/logos/accenture.svg" alt="Accenture"></div>
+                <div class="partner-logo-item"><img src="/images/logos/capgemini.svg" alt="Capgemini"></div>
+                <div class="partner-logo-item"><img src="/images/logos/cognizant.svg" alt="Cognizant"></div>
+
+                <!-- Group 3 -->
+                <div class="partner-logo-item"><img src="/images/logos/tcs.svg" alt="TCS"></div>
+                <div class="partner-logo-item"><img src="/images/logos/infosys.svg" alt="Infosys"></div>
+                <div class="partner-logo-item"><img src="/images/logos/wipro.svg" alt="Wipro"></div>
+                <div class="partner-logo-item"><img src="/images/logos/accenture.svg" alt="Accenture"></div>
+                <div class="partner-logo-item"><img src="/images/logos/capgemini.svg" alt="Capgemini"></div>
+                <div class="partner-logo-item"><img src="/images/logos/cognizant.svg" alt="Cognizant"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Reviews Section -->
+    <section style="background: white;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>What Our Students Say</h2>
+                <p>Real reviews from our students across Google and social media.</p>
+            </div>
+            
+            <div class="google-reviews-widget fade-in">
+                <div class="google-reviews-header">
+                    <div class="google-brand">
+                        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        <div>
+                            <div class="google-business-title">Progress IT Institute</div>
+                            <div class="google-business-address">Nigdi, Pimpri-Chinchwad, Pune</div>
+                        </div>
+                    </div>
+                    <div class="google-rating-summary">
+                        <span class="rating-number">4.9</span>
+                        <div>
+                            <div class="review-stars">
+                                <i class='bx bxs-star' style="color: #f59e0b;"></i>
+                                <i class='bx bxs-star' style="color: #f59e0b;"></i>
+                                <i class='bx bxs-star' style="color: #f59e0b;"></i>
+                                <i class='bx bxs-star' style="color: #f59e0b;"></i>
+                                <i class='bx bxs-star-half' style="color: #f59e0b;"></i>
+                            </div>
+                            <span class="reviews-count"><%= reviews.length || 8 %> reviews</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reviews-carousel-wrapper">
+                    <div class="google-reviews-grid" style="display: flex; gap: 1.5rem; padding: 0.5rem 0;">
+                        <% if (reviews && reviews.length > 0) { %>
+                            <% reviews.forEach(function(review) { %>
+                            <div class="google-review-card" style="min-width: 300px; max-width: 350px;">
+                                <div class="reviewer-meta">
+                                    <div class="reviewer-avatar" style="background: <%= ['#4285F4','#34A853','#EA4335','#FBBC05','#7c3aed','#ec4899','#0ea5e9','#14b8a6'][Math.floor(Math.random()*8)] %>;">
+                                        <%= review.reviewerName ? review.reviewerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : 'U' %>
+                                    </div>
+                                    <div>
+                                        <div class="reviewer-name"><%= review.reviewerName %></div>
+                                        <div class="review-date"><%= review.date || 'Recently' %></div>
+                                    </div>
+                                </div>
+                                <div class="review-stars" style="margin: 0.5rem 0;">
+                                    <% for (let i = 0; i < (parseInt(review.rating) || 5); i++) { %>
+                                        <i class='bx bxs-star' style="color: #f59e0b; font-size: 0.9rem;"></i>
+                                    <% } %>
+                                    <% for (let i = (parseInt(review.rating) || 5); i < 5; i++) { %>
+                                        <i class='bx bx-star' style="color: #d1d5db; font-size: 0.9rem;"></i>
+                                    <% } %>
+                                </div>
+                                <p class="review-text review-text-truncated"><%= review.reviewText %></p>
+                                <% if (review.reviewText && review.reviewText.length > 150) { %>
+                                    <button class="read-more-btn">Read more</button>
+                                <% } %>
+                                <% if (review.source) { %>
+                                    <div class="verified-badge" style="margin-top: 0.5rem;"><i class='bx bxs-check-circle' style="color: #34A853;"></i> <%= review.source %> Review</div>
+                                <% } %>
+                            </div>
+                            <% }); %>
+                        <% } else { %>
+                            <p style="color: var(--text-muted); text-align: center; width: 100%; padding: 2rem;">Reviews coming soon!</p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Teachers Section -->
+    <section>
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Meet Our Expert Faculty</h2>
+                <p>Learn from industry experts with years of real-world experience.</p>
+            </div>
+            
+            <div class="grid grid-2">
+                <div class="card fade-in" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--primary-light); margin-bottom: 1rem; overflow: hidden;">
+                        <img src="https://ui-avatars.com/api/?name=Sourabh+Sir&background=38bdf8&color=000" alt="Sourabh Sir" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Sourabh Sir</h3>
+                    <p style="color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">Lead SAP Instructor</p>
+                    <p style="color: var(--text-muted);">"Friendly nature, anytime available for solving queries."</p>
+                </div>
+                
+                <div class="card fade-in" style="transition-delay: 0.1s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--primary-light); margin-bottom: 1rem; overflow: hidden;">
+                        <img src="https://ui-avatars.com/api/?name=Pallavi+Mam&background=cbd5e1&color=000" alt="Pallavi Mam" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Pallavi Mam</h3>
+                    <p style="color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">Technical Counselor</p>
+                    <p style="color: var(--text-muted);">"Very helpful in guiding students throughout their learning."</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

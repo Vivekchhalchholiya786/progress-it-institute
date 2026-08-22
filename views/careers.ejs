@@ -1,0 +1,406 @@
+<%- include('partials/header') %>
+
+<main style="padding-top: 100px; min-height: 90vh; background: var(--gradient-mesh);">
+    <div class="container" style="max-width: 900px; padding-bottom: 4rem;">
+        
+        <!-- Page Title -->
+        <div class="section-title fade-in" style="margin-bottom: 3rem;">
+            <h2>Join Our <span class="text-gradient">Professional Team</span></h2>
+            <p>Explore current career opportunities at Progress IT Institute and apply online today.</p>
+        </div>
+
+        <!-- Job Openings Grid -->
+        <div class="fade-in" style="margin-bottom: 4rem;">
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; color: var(--text-main);">
+                <i class='bx bx-briefcase-alt-2 text-gradient'></i> Active Openings
+            </h3>
+            
+            <% if (jobs.length === 0) { %>
+                <div class="card" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class='bx bx-info-circle' style="font-size: 3rem; color: var(--primary); margin-bottom: 12px; display: block;"></i>
+                    <p>There are no open positions at the moment. Please check back later or send your resume to info@progressitinstitute.com.</p>
+                </div>
+            <% } else { %>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                    <% jobs.forEach(job => { %>
+                        <div class="card" style="padding: 2rem; border-left: 5px solid var(--primary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 0.5rem;">
+                                    <h4 style="margin: 0; font-size: 1.35rem; color: var(--text-main);"><%= job.title %></h4>
+                                    <span style="background: rgba(37,99,235,0.08); color: var(--primary); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 4px;">
+                                        <i class='bx bx-map'></i> <%= job.location || 'Nigdi, Pune' %>
+                                    </span>
+                                </div>
+                                
+                                <% if (job.description) { %>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.8rem; line-height: 1.6;"><%= job.description %></p>
+                                <% } %>
+                                
+                                <% if (job.requirements) { %>
+                                    <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                                        <strong>Requirements:</strong> <%= job.requirements %>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div>
+                                <button type="button" onclick="selectJobAndScroll('<%= job.id %>', '<%= job.title %>')" class="btn btn-primary" style="white-space: nowrap;">
+                                    Apply Now <i class='bx bx-right-arrow-alt'></i>
+                                </button>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Job Application Container Card -->
+        <div id="applicationPortalCard" class="card fade-in" style="padding: 3rem; margin-top: 2rem; border-top: 4px solid var(--secondary);">
+            
+            <div class="section-title" style="margin-bottom: 2rem; text-align: center;">
+                <h3>Job <span class="text-gradient">Application Portal</span></h3>
+                <p>Complete verification and submit your candidate application below.</p>
+            </div>
+
+            <!-- Multi-step Indicator -->
+            <div class="step-indicator-bar" style="max-width: 400px; margin: 0 auto 2.5rem; display: flex; justify-content: space-between; align-items: center; position: relative;">
+                <div class="step-dot active" id="dotStep1">
+                    <span>1</span>
+                    <p>OTP Login</p>
+                </div>
+                <div class="step-line" id="lineStep" style="flex: 1; height: 3px; background: #e2e8f0; margin: 0 10px; position: relative; top: -10px;"></div>
+                <div class="step-dot" id="dotStep2">
+                    <span>2</span>
+                    <p>Details & Apply</p>
+                </div>
+            </div>
+
+            <!-- STEP 1: OTP VERIFICATION -->
+            <div class="admission-step-content" id="step1Container">
+                <h3 style="margin-bottom: 1rem; font-size: 1.3rem; text-align: center;"><i class='bx bx-shield-quarter text-gradient'></i> Verify Phone Number</h3>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Verify your mobile number using OTP to unlock the application details form.</p>
+                
+                <!-- Inline OTP Status Message -->
+                <div id="otpStatusMessage" class="otp-status-message"></div>
+
+                <form id="otpLoginForm">
+                    <!-- Phone Input -->
+                    <div class="form-group" id="phoneInputGroup">
+                        <label for="regPhone">Mobile Number *</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon-left">+91</span>
+                            <input type="tel" id="regPhone" class="form-control" placeholder="9876543210" required pattern="[0-9]{10}" style="padding-left: 3rem;">
+                        </div>
+                    </div>
+
+                    <!-- Get OTP button -->
+                    <button type="button" id="getOtpBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">
+                        Generate Verification Code <i class='bx bx-mobile-vibration'></i>
+                    </button>
+
+                    <!-- OTP Code Input (hidden by default) -->
+                    <div class="form-group" id="otpInputGroup" style="display: none; animation: fadeIn 0.4s ease-out;">
+                        <label for="otpCode">Enter 4-Digit OTP Code *</label>
+                        <input type="text" id="otpCode" class="form-control" placeholder="XXXX" maxlength="4" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;">
+                    </div>
+
+                    <!-- Verify button (hidden by default) -->
+                    <button type="submit" id="verifyOtpBtn" class="btn btn-outline" style="width: 100%; display: none;">
+                        Verify & Continue <i class='bx bx-check-shield'></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: DETAILS & APPLY (hidden by default) -->
+            <div class="admission-step-content" id="step2Container" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;"><i class='bx bx-user-pin text-gradient'></i> Candidate Details</h3>
+                
+                <form id="careersForm">
+                    <!-- Job Selection -->
+                    <div class="form-group">
+                        <label for="applyJob">Select Job Position *</label>
+                        <select id="applyJob" class="form-control" required>
+                            <option value="" disabled selected>-- Select a Job Opening --</option>
+                            <% jobs.forEach(job => { %>
+                                <option value="<%= job.id %>"><%= job.title %> (<%= job.location || 'Nigdi, Pune' %>)</option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- Candidate Name & Email -->
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="candName">Full Name *</label>
+                            <input type="text" id="candName" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label for="candEmail">Email Address *</label>
+                            <input type="email" id="candEmail" class="form-control" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Phone (read-only, filled from Step 1) and Qualification -->
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="candPhone">Phone Number</label>
+                            <input type="tel" id="candPhone" class="form-control" readonly style="background: rgba(255,255,255,0.05); color: var(--text-muted);">
+                        </div>
+                        <div>
+                            <label for="candQual">Highest Qualification *</label>
+                            <input type="text" id="candQual" class="form-control" placeholder="BE / MCA / MBA / Any Graduate" required>
+                        </div>
+                    </div>
+
+                    <!-- Experience & Portfolio/Resume URL -->
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="candExp">Relevant Experience (e.g. 2 Years, Fresh Graduate) *</label>
+                            <input type="text" id="candExp" class="form-control" placeholder="e.g. 3 Years" required>
+                        </div>
+                        <div>
+                            <label for="candResume">Resume / Portfolio Link (Google Drive, LinkedIn URL) *</label>
+                            <input type="url" id="candResume" class="form-control" placeholder="https://drive.google.com/..." required>
+                        </div>
+                    </div>
+
+                    <!-- Cover Letter / Message -->
+                    <div class="form-group">
+                        <label for="candCover">Cover Letter / Describe Yourself</label>
+                        <textarea id="candCover" class="form-control" rows="3" placeholder="Tell us why you are a good fit for this role..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
+                        Submit Job Application <i class='bx bx-check-double'></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- SUCCESS MESSAGE -->
+            <div id="applicationSuccessCard" style="display: none; text-align: center; padding: 2rem 0; animation: scaleUp 0.5s ease-out;">
+                <div class="success-icon-glowing" style="background: rgba(37,99,235,0.1); color: var(--primary); border-color: rgba(37,99,235,0.2); box-shadow: 0 0 20px rgba(37,99,235,0.2);"><i class='bx bx-party'></i></div>
+                <h3 style="font-size: 2rem; margin: 1.5rem 0 1rem; color: var(--accent);">Application Received!</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8;">
+                    Thank you, <strong id="successCandName">Candidate</strong>! Your application for the position of <strong id="successJobTitle">Job</strong> was submitted successfully. Our recruitment team will review your credentials and contact you shortly.
+                </p>
+                <div style="padding: 1.5rem; background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: var(--radius-md); text-align: left; margin-bottom: 2rem;">
+                    <p style="margin-bottom:0.5rem;"><strong>Application ID:</strong> <span id="successAppId" style="font-weight: 700;">APP-XXXX</span></p>
+                    <p style="margin-bottom:0.5rem;"><strong>Position Applied:</strong> <span id="successJobText">Job</span></p>
+                    <p style="margin-bottom:0.5rem;"><strong>Verified Phone:</strong> <span id="successPhoneText">+91 XXXX</span></p>
+                </div>
+                <a href="/" class="btn btn-primary">Return to Home <i class='bx bx-home'></i></a>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<script>
+    // Autofills job position and scrolls down to the application box
+    function selectJobAndScroll(jobId, jobTitle) {
+        // Find dropdown
+        const selectElem = document.getElementById('applyJob');
+        if (selectElem) {
+            selectElem.value = jobId;
+        }
+        
+        // Scroll to form
+        const targetCard = document.getElementById('applicationPortalCard');
+        if (targetCard) {
+            targetCard.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Client-Side OTP and submission Javascript (leveraging identical endpoint routes)
+    document.addEventListener('DOMContentLoaded', () => {
+        const regPhoneInput = document.getElementById('regPhone');
+        const getOtpBtn = document.getElementById('getOtpBtn');
+        const otpInputGroup = document.getElementById('otpInputGroup');
+        const otpCodeInput = document.getElementById('otpCode');
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        const otpStatusMessage = document.getElementById('otpStatusMessage');
+
+        const step1Container = document.getElementById('step1Container');
+        const step2Container = document.getElementById('step2Container');
+        const dotStep1 = document.getElementById('dotStep1');
+        const dotStep2 = document.getElementById('dotStep2');
+        const lineStep = document.getElementById('lineStep');
+
+        const otpLoginForm = document.getElementById('otpLoginForm');
+        const careersForm = document.getElementById('careersForm');
+        const applicationSuccessCard = document.getElementById('applicationSuccessCard');
+        
+        let verifiedPhoneNumber = '';
+
+        // Status logger helper
+        function showOTPStatus(text, type) {
+            otpStatusMessage.innerText = text;
+            otpStatusMessage.className = 'otp-status-message ' + type;
+            otpStatusMessage.style.display = 'block';
+        }
+
+        // Get OTP Code
+        getOtpBtn.addEventListener('click', async () => {
+            const phone = regPhoneInput.value.trim();
+            if (!phone || !/^[0-9]{10}$/.test(phone)) {
+                showOTPStatus('Please enter a valid 10-digit mobile number.', 'danger');
+                return;
+            }
+
+            getOtpBtn.disabled = true;
+            getOtpBtn.innerText = 'Sending OTP...';
+            showOTPStatus('Sending verification code to your phone...', 'warning');
+
+            try {
+                const response = await fetch('/api/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // Success! Display input box
+                    otpInputGroup.style.display = 'block';
+                    verifyOtpBtn.style.display = 'block';
+                    getOtpBtn.innerText = 'Resend Verification Code';
+                    getOtpBtn.disabled = false;
+                    
+                    if (data.realSMS) {
+                        showOTPStatus(data.message, 'success');
+                    } else {
+                        // Mock fallback (log OTP in UI/console)
+                        showOTPStatus(`${data.message} CODE: ${data.otp}`, 'success');
+                        otpCodeInput.value = data.otp; // Auto fill for simple testing ease
+                    }
+                } else {
+                    getOtpBtn.disabled = false;
+                    getOtpBtn.innerText = 'Generate Verification Code';
+                    showOTPStatus(data.message || 'Error generating OTP.', 'danger');
+                }
+            } catch (err) {
+                console.error(err);
+                getOtpBtn.disabled = false;
+                getOtpBtn.innerText = 'Generate Verification Code';
+                showOTPStatus('Network error occurred. Please try again.', 'danger');
+            }
+        });
+
+        // Submit OTP Code
+        otpLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const phone = regPhoneInput.value.trim();
+            const otp = otpCodeInput.value.trim();
+
+            if (!phone || !otp || otp.length !== 4) {
+                showOTPStatus('Please enter a valid 4-digit verification code.', 'danger');
+                return;
+            }
+
+            verifyOtpBtn.disabled = true;
+            verifyOtpBtn.innerText = 'Verifying...';
+
+            try {
+                const response = await fetch('/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, otp })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // Phone verified! Record number and transition to step 2
+                    verifiedPhoneNumber = '+91 ' + phone;
+                    document.getElementById('candPhone').value = verifiedPhoneNumber;
+                    
+                    // Transition animations
+                    step1Container.style.display = 'none';
+                    step2Container.style.display = 'block';
+                    
+                    // Update step indicators
+                    dotStep1.classList.remove('active');
+                    dotStep2.classList.add('active');
+                    if (lineStep) lineStep.style.background = 'var(--primary)';
+                    
+                } else {
+                    verifyOtpBtn.disabled = false;
+                    verifyOtpBtn.innerText = 'Verify & Continue';
+                    showOTPStatus(data.message || 'OTP verification failed.', 'danger');
+                }
+            } catch (err) {
+                console.error(err);
+                verifyOtpBtn.disabled = false;
+                verifyOtpBtn.innerText = 'Verify & Continue';
+                showOTPStatus('Verification error occurred. Please try again.', 'danger');
+            }
+        });
+
+        // Submit Careers Application Form
+        careersForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const jobId = document.getElementById('applyJob').value;
+            const name = document.getElementById('candName').value.trim();
+            const email = document.getElementById('candEmail').value.trim();
+            const qualification = document.getElementById('candQual').value.trim();
+            const experience = document.getElementById('candExp').value.trim();
+            const resumeLink = document.getElementById('candResume').value.trim();
+            const coverLetter = document.getElementById('candCover').value.trim();
+
+            if (!jobId || !name || !email || !qualification || !experience || !resumeLink) {
+                alert('Please fill out all required fields.');
+                return;
+            }
+
+            const submitBtn = careersForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Submitting Application...';
+
+            try {
+                const response = await fetch('/api/careers/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jobId,
+                        name,
+                        email,
+                        phone: verifiedPhoneNumber,
+                        qualification,
+                        experience,
+                        resumeLink,
+                        coverLetter
+                    })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // Populate success screen details
+                    document.getElementById('successCandName').innerText = name;
+                    
+                    const selectElem = document.getElementById('applyJob');
+                    const jobTitleText = selectElem.options[selectElem.selectedIndex].text;
+                    document.getElementById('successJobTitle').innerText = jobTitleText;
+                    document.getElementById('successJobText').innerText = jobTitleText;
+                    document.getElementById('successPhoneText').innerText = verifiedPhoneNumber;
+                    document.getElementById('successAppId').innerText = data.applicationId;
+                    
+                    // Hide Form, Show success
+                    step2Container.style.display = 'none';
+                    document.querySelector('.step-indicator-bar').style.display = 'none';
+                    document.querySelector('#applicationPortalCard .section-title').style.display = 'none';
+                    applicationSuccessCard.style.display = 'block';
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Submit Job Application';
+                    alert(data.message || 'Failed to submit application.');
+                }
+            } catch (err) {
+                console.error(err);
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Submit Job Application';
+                alert('Network error. Failed to send application.');
+            }
+        });
+    });
+</script>
+
+<%- include('partials/footer') %>

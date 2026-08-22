@@ -1,0 +1,543 @@
+<%- include('partials/header') %>
+
+<main style="padding-top: 100px;">
+    <!-- Course Detail Hero Section -->
+    <div class="course-detail-hero" style="
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+        color: white;
+        padding: 4.5rem 0;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    ">
+        <!-- Glowing background decoration -->
+        <div style="
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            right: -100px;
+            top: -50px;
+            pointer-events: none;
+        "></div>
+        <div style="
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            left: -100px;
+            bottom: -50px;
+            pointer-events: none;
+        "></div>
+
+        <div class="container">
+            <div style="margin-bottom: 1.5rem;">
+                <a href="/courses" style="color: #60a5fa; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+                    <i class='bx bx-left-arrow-alt' style="font-size: 1.2rem;"></i> Back to Courses
+                </a>
+            </div>
+            
+            <span style="background: var(--gradient-1); color: white; padding: 0.4rem 1.2rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">
+                <%= course.category %>
+            </span>
+
+            <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1.5rem; color: #ffffff; line-height: 1.2;">
+                <%= course.title %>
+            </h1>
+            
+            <p style="color: #cbd5e1; font-size: 1.2rem; line-height: 1.8; max-width: 850px; margin-bottom: 2.5rem;">
+                <%= course.about %>
+            </p>
+
+            <!-- Quick Specs Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: var(--radius-md); backdrop-filter: blur(10px);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="background: rgba(37, 99, 235, 0.2); width: 45px; height: 45px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 1.5rem;">
+                        <i class='bx bx-time-five'></i>
+                    </div>
+                    <div>
+                        <span style="display: block; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Duration</span>
+                        <strong style="color: #ffffff;"><%= course.duration %></strong>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="background: rgba(16, 185, 129, 0.2); width: 45px; height: 45px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: #34d399; font-size: 1.5rem;">
+                        <i class='bx bx-desktop'></i>
+                    </div>
+                    <div>
+                        <span style="display: block; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Format</span>
+                        <strong style="color: #ffffff;"><%= course.format %></strong>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="background: rgba(245, 158, 11, 0.2); width: 45px; height: 45px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: #fbbf24; font-size: 1.5rem;">
+                        <i class='bx bx-folder'></i>
+                    </div>
+                    <div>
+                        <span style="display: block; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Projects</span>
+                        <strong style="color: #ffffff;"><%= course.projects %></strong>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="background: rgba(139, 92, 246, 0.2); width: 45px; height: 45px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: #a78bfa; font-size: 1.5rem;">
+                        <i class='bx bx-award'></i>
+                    </div>
+                    <div>
+                        <span style="display: block; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Certification</span>
+                        <strong style="color: #ffffff;"><%= course.certification.includes('Global') || course.certification.includes('Certified') ? 'Global Exam Prep' : 'Completed Prep' %></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <section style="background: #f8fafc; padding: 4rem 0;">
+        <div class="container">
+            <div class="details-grid-wrapper" style="display: grid; grid-template-columns: 2.2fr 1.1fr; gap: 3rem; align-items: flex-start;">
+                
+                <!-- Left/Center Details Section -->
+                <div class="details-main-col">
+                    <!-- Tabs Navigation -->
+                    <div class="tabs-nav-bar" style="display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; gap: 1.5rem; overflow-x: auto; padding-bottom: 2px;">
+                        <button class="tab-btn active" onclick="switchTab(event, 'about-tab')" style="
+                            background: none;
+                            border: none;
+                            padding: 0.8rem 1.2rem;
+                            font-size: 1.1rem;
+                            font-weight: 700;
+                            color: var(--text-muted);
+                            cursor: pointer;
+                            position: relative;
+                            font-family: inherit;
+                            white-space: nowrap;
+                        ">About Course</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'syllabus-tab')" style="
+                            background: none;
+                            border: none;
+                            padding: 0.8rem 1.2rem;
+                            font-size: 1.1rem;
+                            font-weight: 700;
+                            color: var(--text-muted);
+                            cursor: pointer;
+                            position: relative;
+                            font-family: inherit;
+                            white-space: nowrap;
+                        ">Complete Syllabus</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'schedule-tab')" style="
+                            background: none;
+                            border: none;
+                            padding: 0.8rem 1.2rem;
+                            font-size: 1.1rem;
+                            font-weight: 700;
+                            color: var(--text-muted);
+                            cursor: pointer;
+                            position: relative;
+                            font-family: inherit;
+                            white-space: nowrap;
+                        ">Batch Schedule</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'benefits-tab')" style="
+                            background: none;
+                            border: none;
+                            padding: 0.8rem 1.2rem;
+                            font-size: 1.1rem;
+                            font-weight: 700;
+                            color: var(--text-muted);
+                            cursor: pointer;
+                            position: relative;
+                            font-family: inherit;
+                            white-space: nowrap;
+                        ">Course Benefits</button>
+                    </div>
+
+                    <!-- TAB CONTENT: ABOUT -->
+                    <div id="about-tab" class="tab-pane active" style="display: block;">
+                        <div class="card" style="background: white; padding: 2.5rem; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+                            <h3 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                                <i class='bx bx-info-circle text-gradient' style="font-size: 1.8rem;"></i> Program Highlights
+                            </h3>
+                            <div class="highlights-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                <div>
+                                    <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700;">Target Audience</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;"><%= course.details.audience %></p>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700;">Prerequisites</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;"><%= course.details.prerequisites %></p>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700;">Job Roles & Careers</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;"><%= course.details.roles %></p>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700;">Salary Outlook</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; font-weight: 600;" class="text-gradient"><%= course.details.salary %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB CONTENT: SYLLABUS -->
+                    <div id="syllabus-tab" class="tab-pane" style="display: none;">
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                                <i class='bx bx-book-open text-gradient' style="font-size: 1.8rem;"></i> Detailed Course Syllabus
+                            </h3>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <% course.syllabus.forEach((module, idx) => { %>
+                                    <!-- Accordion Item -->
+                                    <div class="accordion-item" style="
+                                        background: white; 
+                                        border: 1px solid var(--border); 
+                                        border-radius: var(--radius-sm); 
+                                        overflow: hidden;
+                                        transition: all 0.3s ease;
+                                    ">
+                                        <button class="accordion-trigger" onclick="toggleAccordion(this)" style="
+                                            width: 100%;
+                                            background: none;
+                                            border: none;
+                                            padding: 1.5rem;
+                                            display: flex;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            cursor: pointer;
+                                            text-align: left;
+                                            font-family: inherit;
+                                        ">
+                                            <span style="font-size: 1.1rem; font-weight: 700; color: var(--text-main);"><%= module.moduleTitle %></span>
+                                            <i class='bx bx-chevron-down' style="font-size: 1.4rem; color: var(--primary); transition: transform 0.3s ease;"></i>
+                                        </button>
+                                        <div class="accordion-content" style="
+                                            max-height: 0;
+                                            overflow: hidden;
+                                            transition: max-height 0.3s ease-out;
+                                            background: #fafbfe;
+                                            border-top: 1px solid transparent;
+                                        ">
+                                            <ul style="padding: 1.5rem 2rem; list-style-type: none; display: flex; flex-direction: column; gap: 10px;">
+                                                <% module.topics.forEach(topic => { %>
+                                                    <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; color: var(--text-muted);">
+                                                        <i class='bx bx-right-arrow-alt' style="color: var(--primary); margin-top: 3px; font-size: 1.1rem;"></i>
+                                                        <span><%= topic %></span>
+                                                    </li>
+                                                <% }) %>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB CONTENT: SCHEDULE -->
+                    <div id="schedule-tab" class="tab-pane" style="display: none;">
+                        <div class="card" style="background: white; padding: 2.5rem; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 2rem;">
+                            <h3 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                                <i class='bx bx-calendar-event text-gradient' style="font-size: 1.8rem;"></i> Batches & Timings
+                            </h3>
+                            
+                            <div class="schedule-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                                <div style="background: #fafbfe; border: 1px solid rgba(37, 99, 235, 0.1); padding: 1.5rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                                    <h4 style="font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-size: 1.05rem;">
+                                        <i class='bx bx-time' style="color: var(--primary);"></i> Weekday Batch
+                                    </h4>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem;"><%= course.schedule.weekday %></p>
+                                </div>
+                                <div style="background: #fafbfe; border: 1px solid rgba(14, 165, 233, 0.1); padding: 1.5rem; border-radius: var(--radius-sm); border-left: 4px solid var(--secondary);">
+                                    <h4 style="font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-size: 1.05rem;">
+                                        <i class='bx bx-calendar' style="color: var(--secondary);"></i> Weekend Batch
+                                    </h4>
+                                    <p style="color: var(--text-muted); font-size: 0.95rem;"><%= course.schedule.weekend %></p>
+                                </div>
+                            </div>
+
+                            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.15); padding: 1.2rem 2rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                <span style="font-size: 1rem; color: var(--text-main); font-weight: 600;">Next Batch Start Date:</span>
+                                <strong style="color: var(--green); font-size: 1.1rem;"><%= course.schedule.nextBatch %></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB CONTENT: BENEFITS -->
+                    <div id="benefits-tab" class="tab-pane" style="display: none;">
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                                <i class='bx bx-badge-check text-gradient' style="font-size: 1.8rem;"></i> Career Benefits & Outcomes
+                            </h3>
+                            
+                            <div class="benefits-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem;">
+                                <% course.benefits.forEach((benefit, idx) => { %>
+                                    <div class="card" style="
+                                        background: white; 
+                                        padding: 1.8rem; 
+                                        border-radius: var(--radius-sm); 
+                                        border: 1px solid var(--border); 
+                                        box-shadow: var(--shadow-sm);
+                                        display: flex;
+                                        gap: 12px;
+                                        align-items: flex-start;
+                                    ">
+                                        <div style="
+                                            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.1));
+                                            color: var(--primary);
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: var(--radius-full);
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            flex-shrink: 0;
+                                            font-weight: 700;
+                                        ">
+                                            <%= idx + 1 %>
+                                        </div>
+                                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0;"><%= benefit %></p>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar (Right) -->
+                <div class="details-sidebar-col">
+                    <!-- Sidebar Card 1: Key Info & Admission CTA -->
+                    <div class="card" style="background: white; padding: 2.2rem; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-md); margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Quick Summary</h3>
+                        
+                        <ul style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem; font-size: 0.95rem; color: var(--text-muted);">
+                            <li style="display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">
+                                <span>Duration:</span>
+                                <strong style="color: var(--text-main);"><%= course.duration %></strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">
+                                <span>Format:</span>
+                                <strong style="color: var(--text-main);"><%= course.format %></strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">
+                                <span>Placement Support:</span>
+                                <strong style="color: var(--text-main);">100% Assistance</strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">
+                                <span>Batch:</span>
+                                <strong style="color: var(--text-main);">Weekday / Weekend</strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between;">
+                                <span>Live Projects:</span>
+                                <strong style="color: var(--text-main);"><%= course.projects.split(' ')[0] %> Projects</strong>
+                            </li>
+                        </ul>
+
+                        <a href="/admission?course=<%= encodeURIComponent(course.title) %>" class="btn btn-primary admission-btn-glowing" style="width: 100%; border: none;">
+                            <i class='bx bx-id-card'></i> Enroll / Register Now
+                        </a>
+                    </div>
+
+                    <% if (typeof brochureUrl !== 'undefined' && brochureUrl) { %>
+                    <!-- Brochure Download -->
+                    <div class="brochure-download-card">
+                        <div class="brochure-icon"><i class='bx bxs-file-pdf'></i></div>
+                        <h4>Course Brochure</h4>
+                        <p>Download the detailed brochure for <%= course.title %></p>
+                        <a href="<%= brochureUrl %>" target="_blank" rel="noopener noreferrer" class="btn-brochure">
+                            <i class='bx bx-download'></i> Download Brochure
+                        </a>
+                    </div>
+                    <% } %>
+
+                    <!-- Sidebar Card 2: Embedded Quick Enquiry Form -->
+                    <div class="card" style="background: white; padding: 2.2rem; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-md);">
+                        <h3 style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 6px;">Quick Enquiry</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Have questions? Ask our academic counselors.</p>
+                        
+                        <form id="courseDetailPageForm" class="slide-query-form">
+                            <!-- Selected Course (Hidden value to pre-fill backend) -->
+                            <input type="hidden" id="courseDetailSelect" value="<%= course.title %>">
+                            
+                            <div class="form-group-row" style="margin-bottom: 1rem;">
+                                <input type="text" id="courseDetailName" placeholder="Your Full Name" required>
+                            </div>
+                            <div class="form-group-row" style="margin-bottom: 1rem;">
+                                <input type="tel" id="courseDetailPhone" placeholder="Mobile Number (10 digits)" pattern="[0-9]{10}" required>
+                            </div>
+                            <div class="form-group-row" style="margin-bottom: 1rem;">
+                                <input type="email" id="courseDetailEmail" placeholder="Email Address (Optional)">
+                            </div>
+                            <div class="form-group-row" style="margin-bottom: 1rem;">
+                                <textarea id="courseDetailMessage" rows="3" placeholder="Write your message here..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-outline" style="width: 100%;">
+                                Submit Enquiry <i class='bx bx-send'></i>
+                            </button>
+                        </form>
+                        <div id="courseDetailFormMsg" class="slide-form-msg" style="display: none; margin-top: 1rem; font-size: 0.9rem;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- CSS & JS triggers -->
+<style>
+    /* Tabs Styles */
+    .tab-btn.active {
+        color: var(--primary) !important;
+    }
+    .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--gradient-1);
+        border-radius: var(--radius-full);
+    }
+    .tab-btn:hover {
+        color: var(--primary);
+    }
+
+    /* Accordion styles */
+    .accordion-item:hover {
+        border-color: rgba(37, 99, 235, 0.25) !important;
+        box-shadow: var(--shadow-sm);
+    }
+    .accordion-item.active {
+        border-color: rgba(37, 99, 235, 0.3) !important;
+    }
+    .accordion-item.active .accordion-trigger i {
+        transform: rotate(180deg);
+    }
+    .accordion-item.active .accordion-content {
+        border-top-color: var(--border) !important;
+    }
+
+    /* Glowing Button Animation */
+    .admission-btn-glowing {
+        box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+        animation: pulseButtonGlow 2s infinite alternate;
+    }
+    @keyframes pulseButtonGlow {
+        0% { box-shadow: 0 0 8px rgba(37, 99, 235, 0.35); }
+        100% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.7); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .details-grid-wrapper {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+        }
+    }
+    @media (max-width: 576px) {
+        .highlights-grid, .schedule-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+        .course-detail-hero h1 {
+            font-size: 2.2rem !important;
+        }
+    }
+</style>
+
+<script>
+    // Tab switching logic
+    function switchTab(evt, tabId) {
+        // Hide all tab panes
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        tabPanes.forEach(pane => pane.style.display = 'none');
+
+        // Remove active class from all tab buttons
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+
+        // Show targets
+        document.getElementById(tabId).style.display = 'block';
+        evt.currentTarget.classList.add('active');
+    }
+
+    // Accordion toggle logic
+    function toggleAccordion(btn) {
+        const item = btn.parentElement;
+        const content = item.querySelector('.accordion-content');
+        
+        // Close other accordion items
+        const siblings = item.parentElement.querySelectorAll('.accordion-item');
+        siblings.forEach(sib => {
+            if (sib !== item && sib.classList.contains('active')) {
+                sib.classList.remove('active');
+                sib.querySelector('.accordion-content').style.maxHeight = '0';
+            }
+        });
+
+        // Toggle self
+        item.classList.toggle('active');
+        if (item.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+            content.style.maxHeight = '0';
+        }
+    }
+
+    // Form submission via AJAX
+    document.getElementById('courseDetailPageForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const msgDiv = document.getElementById('courseDetailFormMsg');
+        
+        submitBtn.innerHTML = 'Sending... <i class="bx bx-loader bx-spin"></i>';
+        submitBtn.disabled = true;
+        msgDiv.style.display = 'none';
+
+        const formData = {
+            name: document.getElementById('courseDetailName').value,
+            phone: document.getElementById('courseDetailPhone').value,
+            email: document.getElementById('courseDetailEmail').value || 'N/A',
+            course: document.getElementById('courseDetailSelect').value,
+            message: document.getElementById('courseDetailMessage').value || 'Requested via Course Detail Page'
+        };
+
+        try {
+            const response = await fetch('/api/enquiry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            msgDiv.style.display = 'block';
+            if (result.success) {
+                msgDiv.style.color = '#10b981'; // green
+                msgDiv.textContent = 'Thank you! Your enquiry has been submitted. We will contact you soon.';
+                this.reset();
+            } else {
+                msgDiv.style.color = '#f43f5e'; // red
+                msgDiv.textContent = result.message || 'Something went wrong. Please try again.';
+            }
+        } catch (err) {
+            msgDiv.style.display = 'block';
+            msgDiv.style.color = '#f43f5e';
+            msgDiv.textContent = 'Connection error. Please try again later.';
+        } finally {
+            submitBtn.innerHTML = 'Submit Enquiry <i class="bx bx-send"></i>';
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Make first accordion active by default (if it exists)
+    document.addEventListener('DOMContentLoaded', () => {
+        const firstTrigger = document.querySelector('.accordion-trigger');
+        if (firstTrigger) {
+            // Trigger a click to open it
+            toggleAccordion(firstTrigger);
+        }
+    });
+</script>
+
+<%- include('partials/footer') %>

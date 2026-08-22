@@ -1,0 +1,425 @@
+<%- include('partials/header') %>
+
+<style>
+    /* Admission page responsive styles */
+    @media (max-width: 768px) {
+        .admission-portal-card {
+            padding: 1.5rem !important;
+        }
+        #studentIdCard {
+            width: 300px !important;
+            height: 460px !important;
+            padding: 1.4rem !important;
+            border-radius: 18px !important;
+        }
+        #studentIdCard h3 {
+            font-size: 1.15rem !important;
+        }
+        #studentIdCard h4 {
+            font-size: 0.95rem !important;
+        }
+        #admissionSuccessCard h3 {
+            font-size: 1.5rem !important;
+        }
+        .id-card-ops-btns {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+        .id-card-ops-btns .btn {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+        .success-details-table {
+            font-size: 0.85rem !important;
+        }
+        .success-details-table td {
+            padding: 0.7rem 1rem !important;
+        }
+    }
+    @media (max-width: 480px) {
+        .admission-portal-card {
+            padding: 1.2rem !important;
+        }
+        #studentIdCard {
+            width: 280px !important;
+            height: 430px !important;
+            padding: 1.2rem !important;
+        }
+        .step-indicator-bar {
+            transform: scale(0.9);
+        }
+        .form-group div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>
+<main style="padding-top: 100px; min-height: 90vh; background: var(--gradient-mesh);">
+    <div class="container" style="max-width: 800px; padding-bottom: 4rem;">
+        
+        <!-- Page Title -->
+        <div class="section-title fade-in" style="margin-bottom: 3rem;">
+            <h2>Online <span class="text-gradient">Admission Portal</span></h2>
+            <p>Complete your registration in two simple steps and secure your seat in the upcoming batch.</p>
+        </div>
+
+        <!-- Admission Container Card -->
+        <div class="card admission-portal-card fade-in" style="padding: 3rem;">
+            
+            <!-- Multi-step Indicator -->
+            <div class="step-indicator-bar">
+                <div class="step-dot active" id="dotStep1">
+                    <span>1</span>
+                    <p>OTP Login</p>
+                </div>
+                <div class="step-line" id="lineStep"></div>
+                <div class="step-dot" id="dotStep2">
+                    <span>2</span>
+                    <p>Student Details</p>
+                </div>
+            </div>
+
+            <!-- STEP 1: OTP VERIFICATION -->
+            <div class="admission-step-content" id="step1Container">
+                <!-- Already Registered Link -->
+                <div style="text-align: right; margin-bottom: 1.5rem; margin-top: -1rem;">
+                    <a href="#" onclick="openStudentLoginPopup(event)" style="color: var(--primary); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; transition: color 0.3s;">
+                        <i class='bx bx-key' style="font-size: 1.1rem;"></i> Already Registered? Download ID Card
+                    </a>
+                </div>
+                <h3 style="margin-bottom: 1rem; font-size: 1.5rem; text-align: center;"><i class='bx bx-shield-quarter text-gradient'></i> Verify Phone Number</h3>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Secure your login using a valid mobile number. Enter a 10-digit number to receive a verification OTP code via SMS.</p>
+                
+                <!-- Inline OTP Status Message -->
+                <div id="otpStatusMessage" class="otp-status-message"></div>
+
+                <form id="otpLoginForm">
+                    <!-- Phone Input -->
+                    <div class="form-group" id="phoneInputGroup">
+                        <label for="regPhone">Mobile Number *</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon-left">+91</span>
+                            <input type="tel" id="regPhone" class="form-control" placeholder="9876543210" required pattern="[0-9]{10}" style="padding-left: 3rem;">
+                        </div>
+                    </div>
+
+                    <!-- Get OTP button -->
+                    <button type="button" id="getOtpBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">
+                        Generate Verification Code <i class='bx bx-mobile-vibration'></i>
+                    </button>
+
+                    <!-- OTP Code Input (hidden by default) -->
+                    <div class="form-group" id="otpInputGroup" style="display: none; animation: fadeIn 0.4s ease-out;">
+                        <label for="otpCode">Enter 4-Digit OTP Code *</label>
+                        <input type="text" id="otpCode" class="form-control" placeholder="XXXX" maxlength="4" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;">
+                    </div>
+
+                    <!-- Verify button (hidden by default) -->
+                    <button type="button" id="verifyOtpBtn" class="btn btn-outline" style="width: 100%; display: none;">
+                        Verify & Continue <i class='bx bx-check-shield'></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: DETAILS & DYNAMIC FEES (hidden by default) -->
+            <div class="admission-step-content" id="step2Container" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;"><i class='bx bx-user-pin text-gradient'></i> Complete Registration</h3>
+                
+                <form id="admissionForm">
+                    <!-- Student details -->
+                    <div class="form-group">
+                        <label for="studName">Full Name *</label>
+                        <input type="text" id="studName" class="form-control" placeholder="Aniket Deshpande" required>
+                    </div>
+
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="studEmail">Email Address</label>
+                            <input type="email" id="studEmail" class="form-control" placeholder="aniket@example.com">
+                        </div>
+                        <div>
+                            <label for="studPhone">Phone Number</label>
+                            <input type="tel" id="studPhone" class="form-control" readonly style="background: rgba(255,255,255,0.05); color: var(--text-muted);">
+                        </div>
+                    </div>
+
+                    <!-- Course selection -->
+                    <div class="form-group">
+                        <label for="admCourse">Course Selection *</label>
+                        <select id="admCourse" class="form-control" required>
+                            <option value="" disabled selected>-- Select a Professional Course --</option>
+                            <!-- SAP FLAGSHIP PORTFOLIOS -->
+                            <optgroup label="SAP Enterprise Modules">
+                                <option value="SAP FICO" data-fee="32000">SAP FICO (Financial & Control) — ₹32,000</option>
+                                <option value="SAP MM" data-fee="29000">SAP MM (Materials Management) — ₹29,000</option>
+                                <option value="SAP SD" data-fee="28000">SAP SD (Sales & Distribution) — ₹28,000</option>
+                                <option value="SAP PP" data-fee="29000">SAP PP (Production Planning) — ₹29,000</option>
+                                <option value="SAP ABAP" data-fee="34000">SAP ABAP (Advanced Developer) — ₹34,000</option>
+                                <option value="SAP SuccessFactors / HCM" data-fee="31000">SAP SuccessFactors / HCM — ₹31,000</option>
+                                <option value="SAP BASIS" data-fee="33000">SAP BASIS (System Admin) — ₹33,000</option>
+                                <option value="SAP HANA" data-fee="35000">SAP HANA (In-Memory Database) — ₹35,000</option>
+                            </optgroup>
+                            <!-- OTHER PREMIUM PORTFOLIOS -->
+                            <optgroup label="Cloud, AI, Data & Business">
+                                <option value="Agentic AI" data-fee="39000">Agentic AI (LangChain, CrewAI, Agents) — ₹39,000</option>
+                                <option value="Advanced Generative AI" data-fee="38000">Advanced Generative AI (LLMs, Prompt Eng, RAG) — ₹38,000</option>
+                                <option value="Data Science with AI" data-fee="37000">Data Science with AI (Deep Learning, Neural Nets) — ₹37,000</option>
+                                <option value="Data Science" data-fee="36000">Data Science (Machine Learning, Statistics) — ₹36,000</option>
+                                <option value="AWS DevOps" data-fee="35000">AWS DevOps (EC2, CI/CD, Docker, Terraform) — ₹35,000</option>
+                                <option value="Databricks" data-fee="34000">Databricks (Lakehouse, Delta Lake, Spark) — ₹34,000</option>
+                                <option value="Azure Cloud" data-fee="32000">Azure Cloud (VNet, VMs, Azure DevOps) — ₹32,000</option>
+                                <option value="Data Analytics" data-fee="30000">Data Analytics (SQL, Excel, Power BI, Tableau) — ₹30,000</option>
+                                <option value="Financial Analyst" data-fee="28000">Financial Analyst (Corporate Valuation, Excel) — ₹28,000</option>
+                                <option value="PySpark" data-fee="27000">PySpark (Big Data Analytics, Spark SQL) — ₹27,000</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Coupon Area -->
+                    <div class="form-group">
+                        <label for="couponInput">Have a Coupon Code?</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="couponInput" class="form-control" placeholder="ENTER COUPON CODE" style="text-transform: uppercase;">
+                            <button type="button" id="applyCouponBtn" class="btn btn-outline" style="padding: 0 1.5rem;">Apply</button>
+                        </div>
+                        <span id="couponFeedback" style="display: block; margin-top: 0.5rem; font-size: 0.875rem; font-weight: 500;"></span>
+                    </div>
+
+                    <!-- Dynamic Fees Calculation Card -->
+                    <div class="fees-calculator-box">
+                        <div class="fee-row">
+                            <span>Standard Course Fee</span>
+                            <span id="standardFee">₹0</span>
+                        </div>
+                        <div class="fee-row discount" id="discountRow" style="display: none;">
+                            <span>Coupon Discount (<span id="couponPercent">0</span>%)</span>
+                            <span id="discountValue">-₹0</span>
+                        </div>
+                        <div class="fee-row total">
+                            <span>Net Payable Fee</span>
+                            <span id="netFee">₹0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
+                        Confirm Admission & Register <i class='bx bx-check-double'></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- SUCCESS MESSAGE -->
+            <div id="admissionSuccessCard" style="display: none; text-align: center; padding: 2rem 0; animation: scaleUp 0.5s ease-out;">
+                <div class="success-icon-glowing"><i class='bx bx-party'></i></div>
+                <h3 style="font-size: 2rem; margin: 1.5rem 0 1.2rem; color: var(--accent);">Seat Confirmed Successfully!</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.8;">
+                    Congratulations, <strong id="successName">Student</strong>! Your online admission is completed. Below is your official Student ID Card. You can upload your photo, then download or print your card.
+                </p>
+
+                <!-- Dynamic Student ID Card Wrapper (html2canvas captures this) -->
+                <div style="display: flex; justify-content: center; margin-bottom: 2.5rem;">
+                    <div id="studentIdCard" style="
+                        width: 350px;
+                        height: 530px;
+                        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+                        border-radius: 24px;
+                        border: 2px solid rgba(255, 255, 255, 0.12);
+                        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.05);
+                        color: white;
+                        font-family: 'Outfit', sans-serif;
+                        padding: 1.8rem;
+                        position: relative;
+                        overflow: hidden;
+                        text-align: left;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                    ">
+                        <!-- Holographic/Glow Background Spheres -->
+                        <div style="position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%); top: -30px; right: -30px; pointer-events: none;"></div>
+                        <div style="position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%); bottom: -40px; left: -40px; pointer-events: none;"></div>
+                        
+                        <!-- Dynamic Verification Stamp / Logo of Institute -->
+                        <div id="idCardStampArea" style="position: absolute; top: 115px; right: 25px; z-index: 5; transform: rotate(12deg); opacity: 0.95; pointer-events: none; text-align: center;">
+                            <div id="idCardStampBox" style="border: 2px solid #f43f5e; color: #f43f5e; padding: 6px 12px; border-radius: 12px; background: rgba(15, 23, 42, 0.95); box-shadow: 0 4px 15px rgba(244, 63, 94, 0.25); display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                <img id="idCardStampLogo" src="/images/logo.png" alt="Progress IT" style="height: 20px; object-fit: contain; filter: drop-shadow(0 0 4px rgba(244,63,94,0.3));">
+                                <span id="idCardStampText" style="font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px; color: #f43f5e; border-top: 1px solid rgba(244,63,94,0.3); padding-top: 3px; display: block; width: 100%;">NOT PAID</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Header -->
+                        <div style="display: flex; align-items: center; gap: 10px; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 12px; z-index: 2;">
+                            <div style="background: rgba(255,255,255,0.06); width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.12);">
+                                <img src="/images/logo.png" alt="Progress IT Logo" style="width: 30px; height: 30px; object-fit: contain;">
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 900; letter-spacing: 0.5px; margin: 0; color: white;">PROGRESS IT</h4>
+                                <span style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: -1px;">Institute Pune</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Body (Avatar + Details) -->
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 15px; gap: 12px; z-index: 2; flex-grow: 1;">
+                            <!-- Image Frame -->
+                            <div style="position: relative; width: 110px; height: 110px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #60a5fa, #a855f7); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);">
+                                <div style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #1e293b;">
+                                    <img id="idCardPhotoPreview" src="https://ui-avatars.com/api/?name=Student&background=1e293b&color=fff&size=120" alt="Student Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                            </div>
+                            
+                            <!-- Student Metadata -->
+                            <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
+                                <div style="text-align: center; margin-bottom: 8px;">
+                                    <h3 id="idCardName" style="font-size: 1.35rem; font-weight: 800; color: white; margin: 0; letter-spacing: 0.3px; text-transform: uppercase;">STUDENT NAME</h3>
+                                    <span style="font-size: 0.75rem; color: #60a5fa; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Student ID Card</span>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px; font-size: 0.82rem;">
+                                    <span style="color: #94a3b8; font-weight: 500;">Registration ID</span>
+                                    <strong id="idCardRegId" style="color: white; font-family: monospace; font-size: 0.88rem;">REG-XXXXXX</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px; font-size: 0.82rem;">
+                                    <span style="color: #94a3b8; font-weight: 500;">Enrolled Course</span>
+                                    <strong id="idCardCourse" style="color: white; max-width: 180px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">COURSE NAME</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px; font-size: 0.82rem;">
+                                    <span style="color: #94a3b8; font-weight: 500;">Date of Admission</span>
+                                    <strong id="idCardDate" style="color: white;">June 09, 2026</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px; font-size: 0.82rem;">
+                                    <span style="color: #94a3b8; font-weight: 500;">Fees Status</span>
+                                    <strong id="idCardFeesPaid" style="color: #f43f5e; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">NOT PAID</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                                    <span style="color: #94a3b8; font-weight: 500;">Status</span>
+                                    <strong style="color: #10b981; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">Active Student</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer (Barcode & Signature) -->
+                        <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 10px; display: flex; justify-content: space-between; align-items: center; z-index: 2; height: 50px;">
+                            <!-- Fake Barcode -->
+                            <div style="display: flex; flex-direction: column; gap: 3px;">
+                                <div style="display: flex; gap: 2px; height: 20px; align-items: flex-end;">
+                                    <div style="width: 2px; height: 100%; background: white;"></div>
+                                    <div style="width: 1px; height: 100%; background: white;"></div>
+                                    <div style="width: 3px; height: 100%; background: white;"></div>
+                                    <div style="width: 1px; height: 100%; background: white;"></div>
+                                    <div style="width: 4px; height: 100%; background: white;"></div>
+                                    <div style="width: 1px; height: 100%; background: white;"></div>
+                                    <div style="width: 2px; height: 100%; background: white;"></div>
+                                    <div style="width: 3px; height: 100%; background: white;"></div>
+                                    <div style="width: 1px; height: 100%; background: white;"></div>
+                                    <div style="width: 2px; height: 100%; background: white;"></div>
+                                    <div style="width: 4px; height: 100%; background: white;"></div>
+                                </div>
+                                <span style="font-size: 0.55rem; color: #94a3b8; font-family: monospace; letter-spacing: 1px;">PROGRESSIT2026</span>
+                            </div>
+                            <!-- Authorized Signature Stamp -->
+                            <div style="text-align: right; display: flex; flex-direction: column; justify-content: center;">
+                                <span style="font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; font-style: italic; color: #60a5fa; font-weight: 700;">Progress IT Authority</span>
+                                <span style="font-size: 0.55rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;">Authorized Stamp</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden file input for photo upload -->
+                <input type="file" id="idCardPhotoUpload" style="display: none;" accept="image/*">
+
+                <!-- ID Card Operations Button Layout -->
+                <div class="id-card-ops-btns" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <!-- Upload Button -->
+                    <button type="button" onclick="document.getElementById('idCardPhotoUpload').click()" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                        <i class='bx bx-camera' style="font-size: 1.25rem;"></i> Upload Photo
+                    </button>
+                    <!-- Download Button -->
+                    <button type="button" id="downloadIdCardBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; border: none;">
+                        <i class='bx bx-download' style="font-size: 1.25rem;"></i> Download Card
+                    </button>
+                    <!-- Print Button -->
+                    <button type="button" id="printIdCardBtn" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                        <i class='bx bx-printer' style="font-size: 1.25rem;"></i> Print
+                    </button>
+                    <!-- Share Button -->
+                    <button type="button" id="shareIdCardBtn" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                        <i class='bx bx-share-alt' style="font-size: 1.25rem;"></i> Share
+                    </button>
+                </div>
+
+                <div style="margin: 2rem auto; max-width: 550px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); text-align: left;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-muted); font-weight: 500; width: 40%;">Student Name</td>
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-main); font-weight: 700;" id="successStudentName">Student</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-muted); font-weight: 500;">Registration ID</td>
+                                <td style="padding: 0.85rem 1.25rem; color: var(--primary); font-weight: 700; font-family: monospace; letter-spacing: 0.5px;" id="successRegId">REG-XXXXXX</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-muted); font-weight: 500;">Course Enrolled</td>
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-main);" id="successCourseText">Course</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-muted); font-weight: 500;">Total Course Fee</td>
+                                <td style="padding: 0.85rem 1.25rem; color: var(--accent); font-weight: 700;" id="successFeesText">₹0</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.85rem 1.25rem; color: var(--text-muted); font-weight: 500;">Fees Paid Status</td>
+                                <td style="padding: 0.85rem 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;" id="successFeesStatus">Not Paid</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <a href="/" class="btn btn-primary">Go to Homepage <i class='bx bx-home'></i></a>
+            </div>
+
+            <!-- CDN script for html2canvas -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+        </div>
+
+    </div>
+</main>
+
+<!-- STUDENT LOGIN MODAL POPUP -->
+<div class="popup-overlay" id="studentLoginPopup">
+    <div class="popup-content" style="max-width: 420px; padding: 2.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); position: relative; box-shadow: var(--shadow-lg); width: 92%;">
+        <button class="close-btn" onclick="closeStudentLoginPopup()" style="position: absolute; top: 1.2rem; right: 1.2rem; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;"><i class='bx bx-x'></i></button>
+        
+        <h3 style="margin-bottom: 0.8rem; color: var(--text-main); font-size: 1.4rem; display: flex; align-items: center; gap: 8px;">
+            <i class='bx bxs-id-card' style="color: var(--primary);"></i> Retrieve ID Card
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Enter your Admission Number (e.g., REG-123456) to retrieve and download your Student ID Card.</p>
+        
+        <div id="studentLoginError" class="otp-status-message danger" style="display: none; margin-bottom: 1.5rem; padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.9rem; color: #f43f5e; background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.2);"></div>
+        
+        <form id="studentLoginForm">
+            <div class="form-group" style="margin-bottom: 1.8rem;">
+                <label for="loginRegId" style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem;">Admission Number *</label>
+                <input type="text" id="loginRegId" class="form-control" placeholder="REG-XXXXXX" required style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; text-align: center;">
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                Retrieve ID Card <i class='bx bx-log-in-circle'></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Inline functions for student login popup toggling
+    function openStudentLoginPopup(e) {
+        if (e) e.preventDefault();
+        document.getElementById('studentLoginPopup').classList.add('active');
+        document.getElementById('studentLoginError').style.display = 'none';
+        document.getElementById('studentLoginForm').reset();
+    }
+    function closeStudentLoginPopup() {
+        document.getElementById('studentLoginPopup').classList.remove('active');
+    }
+</script>
+
+<%- include('partials/footer') %>
